@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV === "development") {
+    require('dotenv').config()
+} 
+
 const express = require('express')
 const morgan = require('morgan')
 const router = require('./routes/index.routes')
@@ -7,7 +11,7 @@ const app = express()
 require('./database')
 
 // Configuration
-app.set('port', process.env.PORT || 4000)
+app.set('port', process.env.PORT)
 
 // Middleware
 app.use(express.json())
