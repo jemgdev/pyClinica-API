@@ -1,13 +1,26 @@
 const Patient = require('../models/Patient')
 
-const PatientController = {}
+const patientController = {}
 
 const handleErrors = (error) => {
 
     console.log(error.message, error.code)
+
+    let errors = { email: '' }
+
+    if (error.code === 11000) {
+        errors.email = 'Email already exists'
+    }
+
+    if (error._message === 'patient validation failed') {
+        errors.email = 'Wrong email'
+    }
+
+    return errors
+
 }
 
-PatientController.register = async (req, res) => {
+patientController.register = async (req, res) => {
 
     const { email, password, confirmPassword } = req.body
 
@@ -23,19 +36,21 @@ PatientController.register = async (req, res) => {
 
             const patientSaved = await newPatient.save()
 
-            res.json(patientSaved)            
+            res.status(201).json(patientSaved)            
         } catch (error) {
             
-            handleErrors(error)
+            res.status(401).json({
+                error: handleErrors(error)
+            })
         }
 
     } 
     else {
 
-        res.json({
+        res.status(401).json({
             error: 'Passwords are differents'
         })
     }
-
-
 }
+
+module.exports = patientController
