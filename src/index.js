@@ -20,6 +20,7 @@ app.use(morgan('dev'))
 // Routes
 app.use(router.specialty)
 app.use(router.patient)
+app.use(router.administrator);
 
 // Listen
 app.listen(app.get('port'), () => {

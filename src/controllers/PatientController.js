@@ -46,7 +46,6 @@ patientController.register = async (req, res) => {
 
     } 
     else {
-
         res.status(401).json({
             error: 'Passwords are differents'
         })
