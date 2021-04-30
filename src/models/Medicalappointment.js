@@ -1,0 +1,18 @@
+const { Schema, model } = require('mongoose')
+
+const Medicalappointment = new Schema({
+    patient: {type: Schema.Types.ObjectId,
+    ref: 'patient'},
+    doctor: {type: Schema.Types.ObjectId,
+    ref: 'doctor'},
+    date:{type : Date, default: Date.now},
+    description:{type: String,},
+    price:{type: String,},
+    prescription: {type:String,},
+    status: {type:String,},
+}, {
+    versionKey: false,
+    timestamps: true
+})
+
+module.exports = model('Medicalappointment', Medicalappointment)
