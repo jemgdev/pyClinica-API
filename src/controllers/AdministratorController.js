@@ -6,7 +6,6 @@ const Doctor = require('../models/Doctor')
 
 const AdministratorController = {}
 AdministratorController.administratorList = async (req, res) => {
-    
     const administratorFound = await Administrator.find()
     console.log(administratorFound)
     res.json(administratorFound)
@@ -35,8 +34,10 @@ AdministratorController.insertAdministrator = async (req, res) => {
         console.log(error)
     }
 }
+
 AdministratorController.insertCampus = async(req,res) =>{
-    const {department,province,district,direction} = req.params   
+    const {department,province,district,direction} = req.body
+    console.log(req.body)   
     const campusSchema = new Campus({
         department,
         province,
