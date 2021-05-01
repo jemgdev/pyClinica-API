@@ -1,7 +1,7 @@
 const { Router } = require('express')
-const { campusList } = require('../controllers/CampusController.js')
+const { listCampus, insertCampus} = require('../controllers/CampusController.js')
 
 const router = Router()
-router.get('/campuslist', campusList)
-
+router.get('/campus/listCampus', listCampus)
+router.post('/campus/insertCampus', insertCampus)
 module.exports = router

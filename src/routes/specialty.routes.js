@@ -1,7 +1,7 @@
 const { Router } = require('express')
-const { specialtyList } = require('../controllers/SpecialtyController')
+const { listSpecialty,insertSpecialty } = require('../controllers/SpecialtyController')
 const router = Router()
 
-router.get('/specialtylist', specialtyList)
-
+router.get('/specialty/listSpecialty', listSpecialty)
+router.post('/specialty/insertSpecialty', insertSpecialty)
 module.exports = router
