@@ -9,11 +9,4 @@ SpecialtyController.specialtyList = async (req, res) => {
     res.json(specialtyFound)
 }
 
-SpecialtyController.insertSpecialty = async (req, res) => {
-
-    const specialtyFound = await Specialty.find()
-
-    res.json(specialtyFound)
-}
-
 module.exports = SpecialtyController

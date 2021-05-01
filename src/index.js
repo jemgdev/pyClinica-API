@@ -22,6 +22,7 @@ app.use(router.specialty)
 app.use(router.patient)
 app.use(router.administrator);
 app.use(router.medicalappointment);
+app.use(router.campus);
 
 // Listen
 app.listen(app.get('port'), () => {
