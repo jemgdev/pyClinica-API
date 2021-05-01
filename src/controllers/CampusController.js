@@ -23,6 +23,24 @@ CampusController.insertCampus = async(req,res) =>{
     }
 }
 
+CampusController.linkCampusEsp= async (req, res) => {
+
+    const {idCampus, idEsp} = req.body
+
+    const newEsp = await Campus.findByIdAndUpdate(idCampus, {
+        $addToSet: {
+            specialty: idEsp
+        }
+    }, {
+        new: true
+    })
+    try {
+    res.json(newEsp)
+    }catch (error) {
+        console.log(error)
+    }
+}
+
 
 
 module.exports = CampusController
