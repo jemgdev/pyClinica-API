@@ -6,7 +6,7 @@ const campusSchema = new Schema({
     district: { type: String},
     direction: { type: String },
     specialty: [{
-           type: Schema.Types.ObjectId,
+           type: Schema.Types.String,
            ref: 'specialty'}]
 }, {
     versionKey: false,
