@@ -2,18 +2,21 @@ const Campus = require("../models/Campus");
 
 const CampusController = {};
 
+// listar campus
 CampusController.listCampus = async (req, res) => {
   const campusFound = await Campus.find();
   res.json(campusFound);
 };
 
+// insertar campus
 CampusController.insertCampus = async (req, res) => {
-  const { department, province, district, direction } = req.body;
+  const { department, province, district, direction,specialty } = req.body;
   const campusSchema = new Campus({
     department,
     province,
     district,
     direction,
+    specialty
   });
   try {
     const campusCreate = await campusSchema.save();
@@ -23,26 +26,7 @@ CampusController.insertCampus = async (req, res) => {
   }
 };
 
-CampusController.linkCampusEsp = async (req, res) => {
-  const { idCampus, idEsp } = req.body;
 
-  const newEsp = await Campus.findByIdAndUpdate(
-    idCampus,
-    {
-      $addToSet: {
-        specialty: idEsp,
-      },
-    },
-    {
-      new: true,
-    }
-  );
-  try {
-    res.json(newEsp);
-  } catch (error) {
-    console.log(error);
-  }
-};
 //eliminar campus por id por parametro
 CampusController.deleteCampus = async (req, res) => {
   const idCampus = req.params.campusId;
@@ -54,10 +38,10 @@ CampusController.deleteCampus = async (req, res) => {
     console.log(error);
   }
 };
+
 //actualizar campus por id por parametro y cambios enviado en json
 CampusController.updateCampus = async (req, res) => {
   const idCampus = req.params.idCampus;
-
   const campusSchema = new Campus({
     department: req.body.department,
     province: req.body.province,

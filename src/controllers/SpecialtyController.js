@@ -2,21 +2,19 @@ const Specialty = require('../models/Specialty')
 
 const SpecialtyController = {}
 
+// listar especialidad
 SpecialtyController.listSpecialty = async (req, res) => {
-
     const specialtyFound = await Specialty.find()
-
     res.json(specialtyFound)
 }
 
+//insertar especialidad
 SpecialtyController.insertSpecialty = async (req,res)=>{
-    const { name,availableHours,price,campus,doctors} = req.body   
+    const {name,price,doctors} = req.body   
     
     const especialitySchema = new Specialty({
         name,
-        availableHours,
         price,
-        campus,
         doctors
     })
     try {
@@ -27,17 +25,32 @@ SpecialtyController.insertSpecialty = async (req,res)=>{
     }
 }
 
-SpecialtyController.updateSpecialty = async(req,res) =>{
-    const {idspecialty,iddoctor} = req.params
-    console.log(idspecialty,iddoctor)
-    const updateEspecialty = await Specialty.findOneAndUpdate(idspecialty, {
-        $addToSet: {
-            doctor: iddoctor
-        }
-    }, {
-        new: true
-    })
-    res.json(updateEspecialty)
-}
+//eliminar espeicalidad
+SpecialtyController.deleteSpecialty = async (req, res) => {
+    const idSpecialty = req.params.specialtyId;
+    try {
+      const deleteFound = await Specialty.remove({ _id: idSpecialty });
+      res.json(deleteFound);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+// actualizar especialidad
+SpecialtyController.updateSpecialty = async (req, res) => {
+    const idSpecialty = req.params.specialtyId;
+    const specialtySchema = new Specialty({
+        name: req.body.name,
+        price: req.body.price,
+        doctors:req.body.doctors
+    });
+  
+    try {
+      const updateFound = await Specialty.findOneAndUpdate(idSpecialty, {$set: req.body},{ new: true });
+      res.json(updateFound);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 module.exports = SpecialtyController
