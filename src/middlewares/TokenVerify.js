@@ -1,9 +1,7 @@
 const Patient = require('../models/Patient')
 const jwt = require('jsonwebtoken')
 
-const tokenVerify = {}
-
-tokenVerify.tokenExist = async (req, res, next) => {
+module.exports = async (req, res, next) => {
 
     const token = req.headers['x-access-token']
 
@@ -46,4 +44,3 @@ tokenVerify.tokenExist = async (req, res, next) => {
     }
 }
 
-module.exports = tokenVerify
