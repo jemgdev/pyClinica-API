@@ -5,7 +5,8 @@ const routers = {
     medicalappointment: require('./medicalappointment.routes'),
     campus: require('./campus.routes'),
     doctor: require('./doctor.routes'),
-    turn: require('./turn.routes')
+    turn: require('./turn.routes'),
+    schedule: require('./schedule.routes')
 }
 
 module.exports = routers
