@@ -6,7 +6,7 @@ const doctorSchema = new Schema({
     name: {type: String},
     surname_p: { type: String},
     surname_m: {type: String},
-    mail: { 
+    email: { 
         type: String, 
         require: true, 
         unique: true,
@@ -28,7 +28,7 @@ const doctorSchema = new Schema({
     gender: { type: String},
     age: {type: Number},
     specialty:{
-        type:Schema.Types.ObjectId, 
+        type: Schema.Types.ObjectId, 
         ref: 'specialty'
     },
     schedule: [
@@ -55,14 +55,15 @@ const doctorSchema = new Schema({
     timestamps: true
 })
 
-doctorSchema.pre('save', async function(){
-    const salt = await bcrypt.genSalt()
+doctorSchema.pre('save', async function() {
+    const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password, salt)
 })
 
-doctorSchema.statics.login = async function(password, encryptedPassword){
-    const boolean = await bcrypt.compare(password, encryptedPassword)
+doctorSchema.statics.login = async (password, encryptedPassword) => {
 
+    const boolean = await bcrypt.compare(password, encryptedPassword)
+    
     if(boolean){
         return true
     }
