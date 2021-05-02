@@ -1,10 +1,14 @@
 const { Schema, model } = require('mongoose')
 
 const Medicalappointment = new Schema({
-    patient: {type: Schema.Types.ObjectId,
-    ref: 'patient'},
-    doctor: {type: Schema.Types.ObjectId,
-    ref: 'doctor'},
+    patient: {
+        type: Schema.Types.ObjectId,
+        ref: 'patient'
+    },
+    doctor: {
+        type: Schema.Types.ObjectId,
+        ref: 'doctor'
+    },
     date:{type : Date, default: Date.now},
     description:{type: String,},
     price:{type: String,},
