@@ -1,5 +1,5 @@
 const Patient = require('../models/Patient')
-const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const patientController = {}
 
@@ -66,23 +66,29 @@ patientController.login = async (req, res) => {
     if (patientFound) {
 
         try {
-        
-            if (patientFound) {
+
+            if (await Patient.login(password, patientFound.password)) {
+
+                const token = await jwt.sign({ id: patientFound._id }, process.env.SECRET_KEY, {
+
+                    expiresIn: 60 * 60 * 24
+                })
     
-                if (await Patient.login(password, patientFound.password)) {
-        
-                    res.status(200).json({
-                        status: true
-                    })
-                } 
-                else {
-        
-                    res.status(200).json({
-                        status: false
-                    })
-                }
+                res.status(200).json({
+                    status: true,
+                    token
+                })
+            } 
+            else {
+    
+                res.status(200).json({
+                    status: false
+                })
             }
+            
         } catch (error) {
+
+            console.log(error)
             
             res.status(404).json({
                 error: handleErrors(error)
@@ -93,6 +99,24 @@ patientController.login = async (req, res) => {
 
         res.status(404).json({
             error: 'Email is not registered' 
+        })
+    }
+}
+
+patientController.changePersonalInformation = async (req, res) => {
+
+    try {
+
+        const patientUpdated = await Patient.findByIdAndUpdate(req.id, req.body, {
+            new: true
+        })
+    
+        res.status(201).json(patientUpdated)
+        
+    } catch (error) {
+        
+        res.status(500).json({
+            message: 'There was an error in the user update'
         })
     }
 }
