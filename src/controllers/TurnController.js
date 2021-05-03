@@ -41,9 +41,10 @@ TurnController.deleteTurn = async (req, res) => {
 TurnController.updateTurn = async (req, res) => {
     const idTurn = req.params.turnId;
     const turnSchema = new Turn({
-        name: req.body.name,
-        price: req.body.price,
-        doctors:req.body.doctors
+        type: req.body.type,
+        start_time: req.body.start_time,
+        end_time:req.body.end_time,
+        schedules:req.body.schedules
     });
   
     try {
