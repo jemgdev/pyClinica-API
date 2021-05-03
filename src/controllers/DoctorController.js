@@ -1,7 +1,9 @@
 const Doctor = require('../models/Doctor')
 const jwt = require('jsonwebtoken')
 const DoctorController = {}
-
+const Specialty = require('../models/Specialty')
+const { Mongoose } = require('mongoose')
+const mongoose = require('mongoose')
 
 //Insertar un Doctor
 DoctorController.insertDoctor = async (req, res) => {
@@ -101,7 +103,43 @@ DoctorController.login = async (req, res) => {
 
 //Listados de Doctores por especialidad
 DoctorController.listDoctorBySpecialty = async (req, res) => {
-    
+
+    const {idSpecialty} = req.params
+
+    const specialtyFound = await Specialty.aggregate(
+        [
+            {
+                $match: {
+                    _id : mongoose.Types.ObjectId(idSpecialty)
+                }
+            },
+            {
+                $lookup: {
+                    from: 'doctors',  //Collections con la que se unira
+                    localField: 'doctors', //Atributo de la collecion Specialty que hara el match
+                    foreignField: '_id', //Id de la collections doctors que hara match
+                    as: 'doctors' //nombre del nuevo atributo(arreglo)
+                }    
+            },
+            {
+                $unwind: '$doctors'  //separar los doctores en diferentes objetos segun la cantidad de matches
+            },
+            {
+                //Elegir que atributos mostrar
+                $project: {
+                    name: '$doctors.name', 
+                    avatar: '$doctors.avatar', 
+                    specialty: '$name' 
+                }    
+            }
+        ]
+    )
+
+    res.status(201).json({
+        message: "Specialty found",
+        specialtyFound
+    })
+
 }
 
 module.exports = DoctorController
