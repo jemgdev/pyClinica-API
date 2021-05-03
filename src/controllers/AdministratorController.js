@@ -39,23 +39,29 @@ AdministratorController.loginAdministrator = async (req, res) => {
     if (administratorFound) {
 
         try {
-        
-            if (administratorFound) {
+
+            if (await Administrator.login(password, patientFound.password)) {
+
+                const token = await jwt.sign({ id: administratorFound._id }, process.env.SECRET_KEY, {
+
+                    expiresIn: 60 * 60 * 24
+                })
     
-                if (await Administrator.login(password, administratorFound.password)) {
-        
-                    res.status(200).json({
-                        status: true
-                    })
-                } 
-                else {
-        
-                    res.status(200).json({
-                        status: false
-                    })
-                }
+                res.status(200).json({
+                    status: true,
+                    token
+                })
+            } 
+            else {
+    
+                res.status(200).json({
+                    status: false
+                })
             }
+            
         } catch (error) {
+
+            console.log(error)
             
             res.status(404).json({
                 error: handleErrors(error)
@@ -65,7 +71,7 @@ AdministratorController.loginAdministrator = async (req, res) => {
     else {
 
         res.status(404).json({
-            error: 'Correo no registrado' 
+            error: 'Email is not registered' 
         })
     }
 }
