@@ -2,6 +2,8 @@ const Doctor = require('../models/Doctor')
 const jwt = require('jsonwebtoken')
 const DoctorController = {}
 
+
+//Insertar un Doctor
 DoctorController.insertDoctor = async (req, res) => {
     const { name, surname_p, surname_m, email, password, phone, dni, age, gender, specialty } = req.body
     const doctorSchema = new Doctor({
@@ -25,6 +27,8 @@ DoctorController.insertDoctor = async (req, res) => {
     }
 }
 
+
+//Actualizar los datos del Doctor
 DoctorController.updateDoctorById = async (req, res) => {
     const {name, surname_p, surname_m, email, password, phone, dni, age} = req.body
 
@@ -53,6 +57,8 @@ DoctorController.updateDoctorById = async (req, res) => {
     }
 }
 
+
+//Logueo del Doctor
 DoctorController.login = async (req, res) => {
     const {email, password} = req.body
 
@@ -90,6 +96,12 @@ DoctorController.login = async (req, res) => {
             error: 'Email is not registered'
         })
     }
+}
+
+
+//Listados de Doctores por especialidad
+DoctorController.listDoctorBySpecialty = async (req, res) => {
+    
 }
 
 module.exports = DoctorController

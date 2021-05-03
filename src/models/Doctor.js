@@ -31,10 +31,10 @@ const doctorSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'specialty'
     },
-    schedule: [
+    turn: [
         {   
             type: Schema.Types.ObjectId,
-            ref: 'schedule'
+            ref: 'turn'
         }
     ],
     prescription: [

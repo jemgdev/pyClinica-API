@@ -1,6 +1,8 @@
 const Doctor = require('../models/Doctor')
 const jwt = require('jsonwebtoken')
 
+
+//Middleware del token del Doctor
 module.exports = async (req, res, next) => {
 
     const token = req.headers['x-access-token']
