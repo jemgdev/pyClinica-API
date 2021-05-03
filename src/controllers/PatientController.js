@@ -22,7 +22,6 @@ const handleErrors = (error) => {
     }
 
     return errors
-
 }
 
 patientController.register = async (req, res) => {
@@ -75,14 +74,14 @@ patientController.login = async (req, res) => {
                 })
     
                 res.status(200).json({
-                    status: true,
+                    auth: true,
                     token
                 })
             } 
             else {
     
                 res.status(200).json({
-                    status: false
+                    auth: false
                 })
             }
             
@@ -91,6 +90,7 @@ patientController.login = async (req, res) => {
             console.log(error)
             
             res.status(404).json({
+                auth: false,
                 error: handleErrors(error)
             })
         }
@@ -105,20 +105,70 @@ patientController.login = async (req, res) => {
 
 patientController.changePersonalInformation = async (req, res) => {
 
+    const { name, fatherLastName, motherLastNmae, phoneNumber, dni, age, gender, civilStatus, department, province, district, address, addressReference } = req.body
+
     try {
 
-        const patientUpdated = await Patient.findByIdAndUpdate(req.id, req.body, {
+        const patientUpdated = await Patient.findByIdAndUpdate(req.id, {
+
+            name,
+            fatherLastName,
+            motherLastNmae,
+            phoneNumber,
+            dni,
+            age,
+            gender,
+            civilStatus,
+            department,
+            province,
+            district,
+            address,
+            addressReference
+        }, {
+
             new: true
         })
     
         res.status(201).json(patientUpdated)
         
     } catch (error) {
-        
+
         res.status(500).json({
-            message: 'There was an error in the user update'
+            error: handleErrors(error)
         })
     }
+}
+
+patientController.changePassword = async (req, res) => {
+
+    const { password, newPassword } = req.body
+
+    const patientFound = await Patient.findById(req.id)
+
+    try {
+        
+        if (await Patient.login(password, patientFound.password)) {
+
+            const patientUpdated = await Patient.findByIdAndUpdate(req.id, {
+                password: await Patient.changePassword(newPassword)
+            })
+    
+            res.status(201).json(patientUpdated)
+        }
+        else {
+    
+            res.status(404).json({
+                error: 'Passwords are differents'
+            })
+        }
+    } catch (error) {
+        
+        res.status(404).json({
+            error: handleErrors(error)
+        })
+    }
+
+    
 }
 
 module.exports = patientController
