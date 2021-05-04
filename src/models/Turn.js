@@ -6,7 +6,7 @@ const turnSchema = new Schema({
     end_time: { type: String},
     schedules: [{ 
         type:Schema.Types.ObjectId,
-        ref: 'schedules'
+        ref: 'schedule'
     }]
 }, {
     versionKey: false,
