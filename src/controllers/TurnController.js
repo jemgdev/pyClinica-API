@@ -55,4 +55,14 @@ TurnController.updateTurn = async (req, res) => {
     }
   };
 
+
+// Listar horarios de un turno
+TurnController.ListOnlySchedules = async (req, res) => {
+
+  const idTurn = req.params.turnId;
+  const listSchedule = await Turn.findById(idTurn).populate('schedules')
+
+  res.json(listSchedule)
+}
+
 module.exports = TurnController
