@@ -9,7 +9,8 @@ const prescriptionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'patient'
     },
-    detalle: {type: String}
+    detail: {type: String},
+    date : { type : Date, default: Date.now}
 },{
     timestamps: true,
     versionKey: false

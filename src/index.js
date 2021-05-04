@@ -26,6 +26,7 @@ app.use(router.campus)
 app.use(router.doctor)
 app.use(router.turn)
 app.use(router.schedule)
+app.use(router.prescription)
 
 // Listen
 app.listen(app.get('port'), () => {
