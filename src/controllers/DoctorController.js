@@ -30,6 +30,26 @@ DoctorController.insertDoctor = async (req, res) => {
 }
 
 
+DoctorController.listDoctors = async (req, res) => {
+
+    const listDoctors = await Doctor.find()
+
+    res.status(201).json({
+        listDoctors
+    })
+}
+
+DoctorController.deleteDoctors = async (req, res) => {
+    const {idDoctor} = req.params
+
+    const doctorDeleted = await Doctor.findByIdAndDelete(idDoctor)
+
+    res.status(201).json({
+        message: 'Doctor deleted',
+        doctorDeleted
+    })
+}
+
 //Actualizar los datos del Doctor
 DoctorController.updateDoctorById = async (req, res) => {
     const {name, surname_p, surname_m, email, password, phone, dni, age} = req.body
