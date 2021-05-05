@@ -1,8 +1,8 @@
 const { Router } = require('express')
-const { listMedicalAppo, insertMedicAppo } = require('../controllers/MedicalappointmentController')
+const { listMedicalAppo, insertMedicAppo,deleteMedicappo,updateMedicappo } = require('../controllers/MedicalappointmentController')
 const router = Router()
-
-router.get('/medicalappointment/listMedicalAppoList', listMedicalAppo)
-router.post('/medicalappointment/:patient/:doctor/:date/:description/:price/:prescription/:status', insertMedicAppo)
-
+router.get('/medicalappointment/listMedicalAppo', listMedicalAppo)
+router.post('/medicalappointment/insertMedicAppo', insertMedicAppo)
+router.delete('/medicalappointment/deleteMedicappo/:medicalappoid', deleteMedicappo)
+router.put('/medicalappointment/updateMedicappo/:medicalappoid', updateMedicappo)
 module.exports = router

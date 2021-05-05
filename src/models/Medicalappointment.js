@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const Medicalappointment = new Schema({
+const medicalappointmentSchema = new Schema({
     patient: {
         type: Schema.Types.ObjectId,
         ref: 'patient'
@@ -19,4 +19,4 @@ const Medicalappointment = new Schema({
     timestamps: true
 })
 
-module.exports = model('Medicalappointment', Medicalappointment)
+module.exports = model('medicalappointment', medicalappointmentSchema)
