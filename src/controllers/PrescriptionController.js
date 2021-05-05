@@ -197,7 +197,7 @@ PrescriptionController.listPrescriptionByIdPatient = async (req, res) => {
                 }    
             },
             {
-                $unwind: '$prescription'
+                $unwind: '$prescription' 
             },
             {
                 $lookup: {
