@@ -46,7 +46,7 @@ SpecialtyController.updateSpecialty = async (req, res) => {
     });
   
     try {
-      const updateFound = await Specialty.findOneAndUpdate(idSpecialty, {$set: req.body},{ new: true });
+      const updateFound = await Specialty.findOneAndUpdate({_id: idSpecialty}, {$set: req.body},{ new: true });
       res.json(updateFound);
     } catch (error) {
       console.log(error);
@@ -57,7 +57,7 @@ SpecialtyController.updateSpecialty = async (req, res) => {
   SpecialtyController.ListOnlyDoctors = async (req, res) => {
 
   const idSpecialty = req.params.specialtyId;
-  const listDoctor = await Specialty.findById(idSpecialty).populate('doctor')
+  const listDoctor = await Specialty.findById(idSpecialty).populate('doctors')
 
   res.json(listDoctor)
 }

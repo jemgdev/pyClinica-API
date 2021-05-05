@@ -48,7 +48,7 @@ TurnController.updateTurn = async (req, res) => {
     });
   
     try {
-      const updateFound = await Turn.findOneAndUpdate(idTurn, {$set: req.body},{ new: true });
+      const updateFound = await Turn.findOneAndUpdate({_id: idTurn}, {$set: req.body},{ new: true });
       res.json(updateFound);
     } catch (error) {
       console.log(error);

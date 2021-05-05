@@ -18,11 +18,11 @@ MedicalappointmentController.insertMedicAppo = async (req, res) => {
         description,
         price,
         prescription,
-        status,
+        status
     });
     try { 
-        const medicalappointmentSchema = await medicalappointmentSchema.save();
-        res.json(campusCreate);
+        const medicalCreate = await medicalappointmentSchema.save();
+        res.json(medicalCreate);
     } catch (error) {
         console.log(error);
     }
@@ -43,7 +43,7 @@ MedicalappointmentController.deleteMedicappo = async (req, res) => {
 //actualizar cita medica por id por parametro y cambios enviado en json
 MedicalappointmentController.updateMedicappo = async (req, res) => {
     const medicalappoid = req.params.medicalappoid;
-    const medicalappointmentSchema = new medicalappointment({
+    const medicalappointmentSchema = new Medicalappointment({
         patient: req.body.patient,
         doctor: req.body.doctor,
         date: req.body.date,
@@ -53,9 +53,11 @@ MedicalappointmentController.updateMedicappo = async (req, res) => {
         status: req.body.status
     });
     try {
-        const updateFound = await Campus.findOneAndUpdate({ _id: medicalappoid }, {$set: req.body},{ new: true });
+        const updateFound = await Medicalappointment.findOneAndUpdate({ _id: medicalappoid }, {$set: req.body},{ new: true });
         res.json(updateFound);
     } catch (error) {
         console.log(error);
     }
 };
+
+module.exports = MedicalappointmentController;
