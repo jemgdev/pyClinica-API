@@ -57,4 +57,15 @@ CampusController.updateCampus = async (req, res) => {
     console.log(error);
   }
 };
+
+// Listar especialidades de un campus
+CampusController.ListOnlySpecialties = async (req, res) => {
+
+  const idCampus = req.params.campusId;
+  console.log(idCampus)
+  const listSpecialty = await Campus.findById(idCampus).populate('specialty')
+
+  res.json(listSpecialty)
+}
+
 module.exports = CampusController;

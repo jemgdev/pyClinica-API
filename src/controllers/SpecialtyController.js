@@ -53,4 +53,13 @@ SpecialtyController.updateSpecialty = async (req, res) => {
     }
   };
 
+  // Listar doctores de una especialidad
+  SpecialtyController.ListOnlyDoctors = async (req, res) => {
+
+  const idSpecialty = req.params.specialtyId;
+  const listDoctor = await Specialty.findById(idSpecialty).populate('doctor')
+
+  res.json(listDoctor)
+}
+
 module.exports = SpecialtyController
