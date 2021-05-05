@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
-const { isEmail } = require('validator')
-const bcrypt = require('bcrypt')
+const { isEmail } = require("validator");
+const bcrypt = require("bcrypt");
 
 const administrator = new Schema(
   {
@@ -14,8 +14,12 @@ const administrator = new Schema(
       validate: [isEmail, "invalid email"],
     },
     password: { type: String, require: true },
+    avatar: {
+      type: String,
+      default: "https://www.jeas.ruet.ac.bd/images/avatar.png",
+    },
     phone: { type: String },
-    dni: { type: String,unique: true },
+    dni: { type: String, unique: true },
     gender: { type: String },
     age: { type: Number },
   },
@@ -25,21 +29,19 @@ const administrator = new Schema(
   }
 );
 
-administrator.pre('save', async function() {
-
-    const salt = await bcrypt.genSalt(10)
-    this.password = await bcrypt.hash(this.password, salt)
-})
+administrator.pre("save", async function () {
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
 
 administrator.statics.login = async (password, encryptedPassword) => {
+  const state = await bcrypt.compare(password, encryptedPassword);
 
-    const state = await bcrypt.compare(password, encryptedPassword)
+  if (state) {
+    return state;
+  }
 
-    if (state) {
-        return state
-    }
-
-    throw Error('Contraseña incorrecta')
-}
+  throw Error("Contraseña incorrecta");
+};
 
 module.exports = model("administrator", administrator);
