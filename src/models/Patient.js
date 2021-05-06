@@ -23,8 +23,7 @@ const patientSchema = new Schema({
     },
     phoneNumber: { type: String },
     dni: { 
-        type: String,
-        unique: true
+        type: String
     },
     age: { type: Number },
     gender: { type: String },

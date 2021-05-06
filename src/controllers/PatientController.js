@@ -26,12 +26,13 @@ const handleErrors = (error) => {
 
 patientController.register = async (req, res) => {
 
-    const { email, password, confirmPassword } = req.body
+    const { name, email, password, confirmPassword } = req.body
 
     if (password === confirmPassword) {
 
         const newPatient = new Patient({
 
+            name,
             email,
             password
         })
@@ -151,6 +152,8 @@ patientController.changePassword = async (req, res) => {
 
             const patientUpdated = await Patient.findByIdAndUpdate(req.id, {
                 password: await Patient.changePassword(newPassword)
+            }, {
+                new: true
             })
     
             res.status(201).json(patientUpdated)
