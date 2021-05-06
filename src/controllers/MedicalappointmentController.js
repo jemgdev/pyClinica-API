@@ -64,20 +64,8 @@ MedicalappointmentController.insertMedicAppo = async (req, res) => {
     }
 };
 
-//eliminar cita medica por id
-MedicalappointmentController.deleteMedicappo = async (req, res) => {
-    const medicalappoid = req.params.medicalappoid;
-    try {
-        const deleteFound = await Medicalappointment.remove({ _id: medicalappoid });
-        res.json(deleteFound);
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-
-//eliminar cita medica para doctor
-MedicalappointmentController.deleteMedicalAppointmentByDoctor = async (req, res) => {
+//eliminar cita medica
+MedicalappointmentController.deleteMedicalAppointment = async (req, res) => {
     const {medicalappoid} = req.params
 
     try{
@@ -86,30 +74,10 @@ MedicalappointmentController.deleteMedicalAppointmentByDoctor = async (req, res)
         const doctorUpdated = await Doctor.findByIdAndUpdate(MedicalappointmentFound.doctor, {
             $pull: {
                 medicalAppointment: MedicalappointmentFound._id
-            },
+            }
         }, {
             new: true
         })
-        
-        res.status(201).json({
-            message: 'Medical Appointment has been deleted',
-            MedicalappointmentFound,
-            doctorUpdated
-        })
-    }catch(error){
-        res.status(201).json({
-            error: 'Medical Appointment has not been deleted',
-        })
-    }
-};
-
-//eliminar cita para paciente
-MedicalappointmentController.deleteMedicalAppointmentByPaciente = async (req, res) => {
-    const {medicalappoid} = req.params
-
-    try{
-        const MedicalappointmentFound = await Medicalappointment.findByIdAndDelete(medicalappoid)
-
         const patientUpdated = await Patient.findByIdAndUpdate(MedicalappointmentFound.patient, {
             $pull: {
                 medicalAppointments: MedicalappointmentFound._id
@@ -121,6 +89,7 @@ MedicalappointmentController.deleteMedicalAppointmentByPaciente = async (req, re
         res.status(201).json({
             message: 'Medical Appointment has been deleted',
             MedicalappointmentFound,
+            doctorUpdated,
             patientUpdated
         })
     }catch(error){
@@ -129,10 +98,6 @@ MedicalappointmentController.deleteMedicalAppointmentByPaciente = async (req, re
         })
     }
 };
-
-
-
-
 
 //actualizar cita medica por id por parametro y cambios enviado en json
 MedicalappointmentController.updateMedicappo = async (req, res) => {
