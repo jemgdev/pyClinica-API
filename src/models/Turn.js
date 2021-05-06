@@ -2,11 +2,11 @@ const { Schema, model } = require('mongoose')
 
 const turnSchema = new Schema({
     type: { type: String}, // turno mañana o tarde
-    start_time: { type: String},
-    end_time: { type: String},
+    start_time: { type: String}, // 
+    end_time: { type: String}, // 
     schedules: [{ 
         type:Schema.Types.ObjectId,
-        ref: 'schedules'
+        ref: 'schedule'
     }]
 }, {
     versionKey: false,

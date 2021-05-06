@@ -1,3 +1,5 @@
+const { request } = require('express')
+const Doctor = require('../models/Doctor')
 const Turn = require('../models/Turn')
 
 const TurnController = {}
@@ -10,6 +12,7 @@ TurnController.listTurn = async (req, res) => {
 
 //insertar turno
 TurnController.insertTurn = async (req,res)=>{
+   const {idDoctor} = req.params
     const {type,start_time,end_time,schedules} = req.body   
     
     const turnSchema = new Turn({
@@ -20,7 +23,19 @@ TurnController.insertTurn = async (req,res)=>{
     })
     try {
     const turnCreate= await turnSchema.save();
-    res.json(turnCreate)
+    const doctorUpdated = await Doctor.findByIdAndUpdate(idDoctor,
+      {
+        $addToSet: {
+          turn: turnCreate._id,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.json({turnCreate,doctorUpdated})
+  
     } catch (error) {
         console.log(error)
     }

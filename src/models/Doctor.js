@@ -31,12 +31,12 @@ const doctorSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'specialty'
     },
-    turn: [
+    turn: 
         {   
             type: Schema.Types.ObjectId,
             ref: 'turn'
         }
-    ],
+    ,
     prescription: [
         {   
             type: Schema.Types.ObjectId,

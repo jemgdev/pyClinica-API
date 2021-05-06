@@ -1,6 +1,7 @@
 const Medicalappointment=require('../models/Medicalappointment')
 const Patient = require('../models/Patient')
 const Doctor = require('../models/Doctor')
+const Schedule = require("../models/Schedule")
 const mongoose = require('mongoose')
 const MedicalappointmentController= {}
 
@@ -13,6 +14,7 @@ MedicalappointmentController.listMedicalAppo = async (req, res) => {
 
 //Insertar cita medica
 MedicalappointmentController.insertMedicAppo = async (req, res) => {
+    const {idSchedule} = req.params
     const { patient, doctor, date, description, price, prescription, status } = req.body;
     const medicalappointmentSchema = new Medicalappointment({
         patient,
@@ -30,6 +32,7 @@ MedicalappointmentController.insertMedicAppo = async (req, res) => {
             {
               $addToSet: {
                 medicalAppointment: medicalCreate._id,
+                
               },
             },
             {
@@ -46,6 +49,15 @@ MedicalappointmentController.insertMedicAppo = async (req, res) => {
               new: true,
             }
           );
+          const scheduleUpdated = await Schedule.findByIdAndUpdate(idSchedule,
+            {
+                availability:false
+            },
+            {
+              new: true,
+            }
+          );
+        
         res.json(medicalCreate);
     } catch (error) {
         console.log(error);
@@ -69,16 +81,16 @@ MedicalappointmentController.deleteMedicalAppointmentByDoctor = async (req, res)
     const {medicalappoid} = req.params
 
     try{
-        const MedicalappointmentFound = await Medicalappointment.findByIdAndDelete(medicalappoid)
+        const MedicalappointmentFound = await Medicalappointment.findByIdAndUpdate(medicalappoid,{status:false})
 
         const doctorUpdated = await Doctor.findByIdAndUpdate(MedicalappointmentFound.doctor, {
             $pull: {
-                medicalappointment: MedicalappointmentFound._id
-            }
+                medicalAppointment: MedicalappointmentFound._id
+            },
         }, {
             new: true
         })
-
+        
         res.status(201).json({
             message: 'Medical Appointment has been deleted',
             MedicalappointmentFound,
@@ -100,7 +112,7 @@ MedicalappointmentController.deleteMedicalAppointmentByPaciente = async (req, re
 
         const patientUpdated = await Patient.findByIdAndUpdate(MedicalappointmentFound.patient, {
             $pull: {
-                medicalappointment: MedicalappointmentFound._id
+                medicalAppointments: MedicalappointmentFound._id
             }
         }, {
             new: true

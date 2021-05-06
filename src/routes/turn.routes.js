@@ -3,7 +3,7 @@ const {  listTurn,insertTurn,deleteTurn,updateTurn,ListOnlySchedules} = require(
 const router = Router()
 
 router.get('/turn/listTurn', listTurn)
-router.post('/turn/insertTurn', insertTurn)
+router.post('/turn/insertTurn/:idDoctor', insertTurn)
 router.delete('/turn/deleteTurn/:turnId', deleteTurn)
 router.put('/turn/updateTurn/:turnId', updateTurn)
 router.get('/turn/ListOnlySchedules/:turnId', ListOnlySchedules)
