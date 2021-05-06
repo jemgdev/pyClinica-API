@@ -29,7 +29,7 @@ CampusController.insertCampus = async (req, res) => {
 
 //eliminar campus por id por parametro
 CampusController.deleteCampus = async (req, res) => {
-  const idCampus = req.params.campusId;
+  const idCampus = req.params.campus-id;
 
   try {
     const deleteFound = await Campus.remove({ _id: idCampus });
@@ -41,7 +41,7 @@ CampusController.deleteCampus = async (req, res) => {
 
 //actualizar campus por id por parametro y cambios enviado en json
 CampusController.updateCampus = async (req, res) => {
-  const idCampus = req.params.campusId;
+  const idCampus = req.params.campus-id;
   const campusSchema = new Campus({
     department: req.body.department,
     province: req.body.province,
@@ -63,7 +63,7 @@ CampusController.updateCampus = async (req, res) => {
 // Listar especialidades de un campus
 CampusController.ListOnlySpecialties = async (req, res) => {
 
-  const idCampus = req.params.campusId;
+  const idCampus = req.params.campus-id;
   console.log(idCampus)
   const listSpecialty = await Campus.findById(idCampus).populate('specialty')
 

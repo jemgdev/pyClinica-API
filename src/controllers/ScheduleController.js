@@ -64,8 +64,8 @@ ScheduleController.updateSchedule = async (req, res) => {
     availability: req.body.availability,
   });
   try {
-    const updateFound = await Schedule.findOneAndUpdate(
-      idSchedule,
+    const updateFound = await Schedule.findByIdAndUpdate(
+       idSchedule,
       { $set: req.body },
       { new: true }
     );

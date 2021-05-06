@@ -13,7 +13,7 @@ const medicalappointmentSchema = new Schema({
     description:{type: String,},
     price:{type: String,},
     prescription: {type:String,},
-    status: {type:String,},
+    status: {type: Boolean,}, 
 }, {
     versionKey: false,
     timestamps: true
