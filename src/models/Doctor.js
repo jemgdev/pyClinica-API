@@ -3,9 +3,9 @@ const { isEmail } = require('validator')
 const bcrypt = require('bcrypt')
 
 const doctorSchema = new Schema({
-    name: { type: String },
-    surname_p: { type: String },
-    surname_m: { type: String },
+    name: { type: String, require: true },
+    surname_p: { type: String, require: true},
+    surname_m: { type: String, require: true},
     email: {
         type: String,
         require: true,
