@@ -4,9 +4,18 @@ const bcrypt = require('bcrypt')
 
 const patientSchema = new Schema({
 
-    name: { type: String },
-    fatherLastName: { type: String },
-    motherLastName: { type: String },
+    name: { 
+        type: String,
+        required: true 
+    },
+    fatherLastName: { 
+        type: String,
+        required: true
+    },
+    motherLastName: { 
+        type: String,
+        required: true 
+    },
     email: { 
         type: String, 
         require: true, 
