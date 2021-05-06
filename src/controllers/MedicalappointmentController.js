@@ -1,9 +1,9 @@
-const Medicalappointment=require('../models/Medicalappointment')
+const Medicalappointment = require('../models/Medicalappointment')
 const Patient = require('../models/Patient')
 const Doctor = require('../models/Doctor')
 const Schedule = require("../models/Schedule")
 const mongoose = require('mongoose')
-const MedicalappointmentController= {}
+const MedicalappointmentController = {}
 
 //Listar Cita medica
 MedicalappointmentController.listMedicalAppo = async (req, res) => {
@@ -14,51 +14,55 @@ MedicalappointmentController.listMedicalAppo = async (req, res) => {
 
 //Insertar cita medica
 MedicalappointmentController.insertMedicAppo = async (req, res) => {
-    const {idSchedule} = req.params
+    const { idSchedule } = req.params
     const { patient, doctor, date, description, price, prescription, status } = req.body;
     const medicalappointmentSchema = new Medicalappointment({
         patient,
         doctor,
         date,
         description,
-        price,
-        prescription,
-        status
+        price
     });
-    try { 
+    try {
         const medicalCreate = await medicalappointmentSchema.save();
-        // aqui
+
         const doctorUpdated = await Doctor.findByIdAndUpdate(doctor,
             {
-              $addToSet: {
-                medicalAppointment: medicalCreate._id,
-                
-              },
+                $addToSet: {
+                    medicalAppointment: medicalCreate._id,
+
+                },
             },
             {
-              new: true,
+                new: true,
             }
-          );
+        );
         const patientUpdated = await Patient.findByIdAndUpdate(patient,
             {
-              $addToSet: {
-                medicalAppointments: medicalCreate._id,
-              },
+                $addToSet: {
+                    medicalAppointments: medicalCreate._id,
+                },
             },
             {
-              new: true,
+                new: true,
             }
-          );
-          const scheduleUpdated = await Schedule.findByIdAndUpdate(idSchedule,
+        );
+        const scheduleUpdated = await Schedule.findByIdAndUpdate(idSchedule,
             {
-                availability:false
+                availability: false
             },
             {
-              new: true,
+                new: true,
             }
-          );
-        
-        res.json(medicalCreate);
+        );
+
+        res.json({
+            medicalCreate,
+            doctorUpdated,
+            patientUpdated,
+            scheduleUpdated
+        });
+
     } catch (error) {
         console.log(error);
     }
@@ -66,10 +70,10 @@ MedicalappointmentController.insertMedicAppo = async (req, res) => {
 
 //eliminar cita medica
 MedicalappointmentController.deleteMedicalAppointment = async (req, res) => {
-    const {medicalappoid} = req.params
+    const { medicalappoid } = req.params
 
-    try{
-        const MedicalappointmentFound = await Medicalappointment.findByIdAndUpdate(medicalappoid,{status:false})
+    try {
+        const MedicalappointmentFound = await Medicalappointment.findByIdAndDelete(medicalappoid)
 
         const doctorUpdated = await Doctor.findByIdAndUpdate(MedicalappointmentFound.doctor, {
             $pull: {
@@ -92,7 +96,7 @@ MedicalappointmentController.deleteMedicalAppointment = async (req, res) => {
             doctorUpdated,
             patientUpdated
         })
-    }catch(error){
+    } catch (error) {
         res.status(201).json({
             error: 'Medical Appointment has not been deleted',
         })
@@ -108,11 +112,9 @@ MedicalappointmentController.updateMedicappo = async (req, res) => {
         date: req.body.date,
         description: req.body.description,
         price: req.body.price,
-        prescription: req.body.prescription,
-        status: req.body.status
     });
     try {
-        const updateFound = await Medicalappointment.findOneAndUpdate({ _id: medicalappoid }, {$set: req.body},{ new: true });
+        const updateFound = await Medicalappointment.findOneAndUpdate({ _id: medicalappoid }, { $set: req.body }, { new: true });
         res.json(updateFound);
     } catch (error) {
         console.log(error);
@@ -121,33 +123,33 @@ MedicalappointmentController.updateMedicappo = async (req, res) => {
 
 //Listado de Citas medicas por Doctor
 MedicalappointmentController.listMedicAppoIdDoctor = async (req, res) => {
-    const {idDoctor} = req.params
+    const { idDoctor } = req.params
 
     const doctorFound = await Doctor.aggregate(
         [
             {
                 $match: {
-                    _id : mongoose.Types.ObjectId(idDoctor)
-                }   
+                    _id: mongoose.Types.ObjectId(idDoctor)
+                }
             },
             {
                 $lookup: {
-                    from: 'medicalappointments',  
-                    localField: 'medicalAppointment', 
-                    foreignField: '_id', 
-                    as: 'medicalAppointment' 
-                }    
+                    from: 'medicalappointments',
+                    localField: 'medicalAppointment',
+                    foreignField: '_id',
+                    as: 'medicalAppointment'
+                }
             },
             {
                 $unwind: '$medicalAppointment'
             },
             {
                 $lookup: {
-                    from: 'patients',  
-                    localField: 'medicalAppointment.patient', 
-                    foreignField: '_id', 
-                    as: 'patient' 
-                }    
+                    from: 'patients',
+                    localField: 'medicalAppointment.patient',
+                    foreignField: '_id',
+                    as: 'patient'
+                }
             },
             {
                 $unwind: '$patient'
@@ -157,7 +159,7 @@ MedicalappointmentController.listMedicAppoIdDoctor = async (req, res) => {
                     patient: '$patient.name',
                     _id: "$medicalAppointment._id",
                     date: '$medicalAppointment.date'
-                }   
+                }
             }
         ]
     )
@@ -170,33 +172,33 @@ MedicalappointmentController.listMedicAppoIdDoctor = async (req, res) => {
 
 //Listado de Citas medicas por Paciente
 MedicalappointmentController.listMedicAppoByIdPatient = async (req, res) => {
-    const {idPatient} = req.params
+    const { idPatient } = req.params
 
     const patientFound = await Patient.aggregate(
         [
             {
                 $match: {
-                    _id : mongoose.Types.ObjectId(idPatient)
-                }   
+                    _id: mongoose.Types.ObjectId(idPatient)
+                }
             },
             {
                 $lookup: {
-                    from: 'medicalappointments',  
-                    localField: 'medicalAppointments', 
-                    foreignField: '_id', 
-                    as: 'medicalAppointments' 
-                }    
+                    from: 'medicalappointments',
+                    localField: 'medicalAppointments',
+                    foreignField: '_id',
+                    as: 'medicalAppointments'
+                }
             },
             {
                 $unwind: '$medicalAppointments'
             },
             {
                 $lookup: {
-                    from: 'doctors',  
-                    localField: 'medicalAppointments.doctor', 
-                    foreignField: '_id', 
-                    as: 'doctor' 
-                }    
+                    from: 'doctors',
+                    localField: 'medicalAppointments.doctor',
+                    foreignField: '_id',
+                    as: 'doctor'
+                }
             },
             {
                 $unwind: '$doctor'
@@ -206,7 +208,7 @@ MedicalappointmentController.listMedicAppoByIdPatient = async (req, res) => {
                     doctor: '$doctor.name',
                     _id: "$medicalAppointments._id",
                     date: '$medicalAppointments.date'
-                }   
+                }
             }
         ]
     )

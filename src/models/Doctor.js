@@ -3,12 +3,12 @@ const { isEmail } = require('validator')
 const bcrypt = require('bcrypt')
 
 const doctorSchema = new Schema({
-    name: {type: String},
-    surname_p: { type: String},
-    surname_m: {type: String},
-    email: { 
-        type: String, 
-        require: true, 
+    name: { type: String },
+    surname_p: { type: String },
+    surname_m: { type: String },
+    email: {
+        type: String,
+        require: true,
         unique: true,
         validate: [isEmail, 'invalid email']
     },
@@ -16,46 +16,39 @@ const doctorSchema = new Schema({
         type: String,
         default: 'https://www.jeas.ruet.ac.bd/images/avatar.png'
     },
-    password: { 
-        type: String, 
+    password: {
+        type: String,
         require: true
     },
-    phone: {type: String},
-    dni: { 
-        type: String, 
+    phone: { type: String },
+    dni: {
+        type: String,
         unique: true
     },
-    gender: { type: String},
-    age: {type: Number},
-    specialty:{
-        type: Schema.Types.ObjectId, 
+    gender: { type: String },
+    age: { type: Number },
+    specialty: {
+        type: Schema.Types.ObjectId,
         ref: 'specialty'
     },
-    turn: 
-        {   
-            type: Schema.Types.ObjectId,
-            ref: 'turn'
-        }
-    ,
-    prescription: [
-        {   
-            type: Schema.Types.ObjectId,
-            ref: 'prescription'
-        }
-    ],
+    turn:
+    {
+        type: Schema.Types.ObjectId,
+        ref: 'turn'
+    },
     medicalAppointment: [
-        {   
+        {
             type: Schema.Types.ObjectId,
             ref: 'medicalAppointment'
         }
     ]
-    }
-, {
-    versionKey: false,
-    timestamps: true
-})
+}
+    , {
+        versionKey: false,
+        timestamps: true
+    })
 
-doctorSchema.pre('save', async function() {
+doctorSchema.pre('save', async function () {
     const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password, salt)
 })
@@ -63,8 +56,8 @@ doctorSchema.pre('save', async function() {
 doctorSchema.statics.login = async (password, encryptedPassword) => {
 
     const boolean = await bcrypt.compare(password, encryptedPassword)
-    
-    if(boolean){
+
+    if (boolean) {
         return true
     }
     throw Error('Password is wrong')

@@ -11,9 +11,7 @@ const medicalappointmentSchema = new Schema({
     },
     date:{type : Date, default: Date.now},
     description:{type: String,},
-    price:{type: String,},
-    prescription: {type:String,},
-    status: {type: Boolean,}, 
+    price:{type: String,}
 }, {
     versionKey: false,
     timestamps: true

@@ -38,14 +38,7 @@ const patientSchema = new Schema({
            type: Schema.Types.ObjectId,
            ref: 'medicalAppointment'
         }
-    ],
-    //agregado
-    prescription: [
-        {   
-            type: Schema.Types.ObjectId,
-            ref: 'prescription'
-        }
-    ],
+    ]
 }, {
     timestamps: true,
     versionKey: false

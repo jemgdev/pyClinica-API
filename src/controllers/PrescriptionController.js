@@ -70,64 +70,6 @@ PrescriptionController.updatePrescription = async (req, res) => {
     } 
 }
 
-
-//Eliminar las recetas medicas para el Doctor
-PrescriptionController.deletePrescriptionByDoctor = async (req, res) => {
-    const {idPrescription} = req.params
-
-    try{
-        const prescriptionFound = await Prescription.findById(idPrescription)
-
-        const doctorUpdated = await Doctor.findByIdAndUpdate(prescriptionFound.doctor, {
-            $pull: {
-                prescription: prescriptionFound._id
-            }
-        }, {
-            new: true
-        })
-
-        res.status(201).json({
-            message: 'Prescription has been deleted',
-            prescriptionFound,
-            doctorUpdated
-        })
-    }catch(error){
-        res.status(201).json({
-            error: 'Prescription has not been deleted',
-        })
-    }
-}
-
-
-//Eliminar las recetas medicas para el paciente
-PrescriptionController.deletePrescriptionByPaciente = async (req, res) => {
-    const {idPrescription} = req.params
-
-    try{
-        const prescriptionDeleted = await Prescription.findByIdAndDelete(idPrescription)
-
-        const patientUpdated = await Patient.findByIdAndUpdate(prescriptionDeleted.patient, {
-            $pull: {
-                prescription: prescriptionDeleted._id
-            }
-        }, {
-            new: true
-        })
-
-        res.status(201).json({
-            message: 'Prescription has been deleted',
-            prescriptionDeleted,
-            patientUpdated
-        })
-    }catch(error){
-        res.status(201).json({
-            error: 'Prescription has not been deleted',
-        })
-    }
-}
-
-
-
 //Listado de Citas por Doctor
 PrescriptionController.listPrescriptionByIdDoctor = async (req, res) => {
     const {idDoctor} = req.params

@@ -23,7 +23,19 @@ DoctorController.insertDoctor = async (req, res) => {
 
     try {
         const doctorCreate = await doctorSchema.save();
-        res.json(doctorCreate)
+        
+        const specialtyFound = await Specialty.findByIdAndUpdate(doctorCreate.specialty, {
+            $addToSet:{
+                doctors: doctorCreate._id
+            }
+        },{
+            new: true
+        })
+
+        res.json({
+            doctorCreate,
+            specialtyFound
+        })
     } catch (error) {
         console.log(error)
     }
@@ -45,9 +57,18 @@ DoctorController.deleteDoctors = async (req, res) => {
     try {
         const doctorDeleted = await Doctor.findByIdAndDelete(idDoctor)
 
+        const specialtyFound = await Specialty.findByIdAndUpdate(doctorDeleted.specialty, {
+            $pull: {
+                doctors: doctorDeleted._id
+            }
+        },{
+            new: true
+        })
+
         res.status(201).json({
             message: 'Doctor deleted',
-            doctorDeleted
+            doctorDeleted,
+            specialtyFound
         })
     } catch (error) {
         res.status(201).json({
