@@ -101,11 +101,11 @@ AdministratorController.insertAdministrator = async (req, res) => {
 
 AdministratorController.changePersonalInformation = async (req, res) => {
 
-    const { name,surname_p,surname_m, mail,password,phone,dni,gender, age} = req.body 
+    const { name,surname_p,surname_m,phone,dni,gender,age} = req.body 
 
         try {
     
-            const administratorUpdated = await Patient.findByIdAndUpdate(req.id, {
+            const administratorUpdated = await Administrator.findByIdAndUpdate(req.id, {
             name,
             surname_p,
             surname_m,

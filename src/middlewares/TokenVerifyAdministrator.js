@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 module.exports = async (req, res, next) => {
 
     const token = req.headers['x-access-token']
-
+    
     if (!token) {
 
         res.status(404).json({
@@ -37,6 +37,6 @@ module.exports = async (req, res, next) => {
             })
         }
     }
-
+    
     
 }
