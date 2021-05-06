@@ -1,4 +1,7 @@
 const Medicalappointment=require('../models/Medicalappointment')
+const Patient = require('../models/Patient')
+const Doctor = require('../models/Doctor')
+const mongoose = require('mongoose')
 const MedicalappointmentController= {}
 
 //Listar Cita medica
@@ -22,6 +25,27 @@ MedicalappointmentController.insertMedicAppo = async (req, res) => {
     });
     try { 
         const medicalCreate = await medicalappointmentSchema.save();
+        // aqui
+        const doctorUpdated = await Doctor.findByIdAndUpdate(doctor,
+            {
+              $addToSet: {
+                medicalAppointment: medicalCreate._id,
+              },
+            },
+            {
+              new: true,
+            }
+          );
+        const patientUpdated = await Patient.findByIdAndUpdate(patient,
+            {
+              $addToSet: {
+                medicalAppointments: medicalCreate._id,
+              },
+            },
+            {
+              new: true,
+            }
+          );
         res.json(medicalCreate);
     } catch (error) {
         console.log(error);
@@ -38,6 +62,64 @@ MedicalappointmentController.deleteMedicappo = async (req, res) => {
         console.log(error);
     }
 };
+
+
+//eliminar cita medica para doctor
+MedicalappointmentController.deleteMedicalAppointmentByDoctor = async (req, res) => {
+    const {medicalappoid} = req.params
+
+    try{
+        const MedicalappointmentFound = await Medicalappointment.findByIdAndDelete(medicalappoid)
+
+        const doctorUpdated = await Doctor.findByIdAndUpdate(MedicalappointmentFound.doctor, {
+            $pull: {
+                medicalappointment: MedicalappointmentFound._id
+            }
+        }, {
+            new: true
+        })
+
+        res.status(201).json({
+            message: 'Medical Appointment has been deleted',
+            MedicalappointmentFound,
+            doctorUpdated
+        })
+    }catch(error){
+        res.status(201).json({
+            error: 'Medical Appointment has not been deleted',
+        })
+    }
+};
+
+//eliminar cita para paciente
+MedicalappointmentController.deleteMedicalAppointmentByPaciente = async (req, res) => {
+    const {medicalappoid} = req.params
+
+    try{
+        const MedicalappointmentFound = await Medicalappointment.findByIdAndDelete(medicalappoid)
+
+        const patientUpdated = await Patient.findByIdAndUpdate(MedicalappointmentFound.patient, {
+            $pull: {
+                medicalappointment: MedicalappointmentFound._id
+            }
+        }, {
+            new: true
+        })
+
+        res.status(201).json({
+            message: 'Medical Appointment has been deleted',
+            MedicalappointmentFound,
+            patientUpdated
+        })
+    }catch(error){
+        res.status(201).json({
+            error: 'Medical Appointment has not been deleted',
+        })
+    }
+};
+
+
+
 
 
 //actualizar cita medica por id por parametro y cambios enviado en json
@@ -59,5 +141,103 @@ MedicalappointmentController.updateMedicappo = async (req, res) => {
         console.log(error);
     }
 };
+
+//Listado de Citas medicas por Doctor
+MedicalappointmentController.listMedicAppoIdDoctor = async (req, res) => {
+    const {idDoctor} = req.params
+
+    const doctorFound = await Doctor.aggregate(
+        [
+            {
+                $match: {
+                    _id : mongoose.Types.ObjectId(idDoctor)
+                }   
+            },
+            {
+                $lookup: {
+                    from: 'medicalappointments',  
+                    localField: 'medicalAppointment', 
+                    foreignField: '_id', 
+                    as: 'medicalAppointment' 
+                }    
+            },
+            {
+                $unwind: '$medicalAppointment'
+            },
+            {
+                $lookup: {
+                    from: 'patients',  
+                    localField: 'medicalAppointment.patient', 
+                    foreignField: '_id', 
+                    as: 'patient' 
+                }    
+            },
+            {
+                $unwind: '$patient'
+            },
+            {
+                $project: {
+                    patient: '$patient.name',
+                    _id: "$medicalAppointment._id",
+                    date: '$medicalAppointment.date'
+                }   
+            }
+        ]
+    )
+
+    res.status(201).json({
+        message: 'Doctor found',
+        doctorFound
+    })
+}
+
+//Listado de Citas medicas por Paciente
+MedicalappointmentController.listMedicAppoByIdPatient = async (req, res) => {
+    const {idPatient} = req.params
+
+    const patientFound = await Patient.aggregate(
+        [
+            {
+                $match: {
+                    _id : mongoose.Types.ObjectId(idPatient)
+                }   
+            },
+            {
+                $lookup: {
+                    from: 'medicalappointments',  
+                    localField: 'medicalAppointments', 
+                    foreignField: '_id', 
+                    as: 'medicalAppointments' 
+                }    
+            },
+            {
+                $unwind: '$medicalAppointments'
+            },
+            {
+                $lookup: {
+                    from: 'doctors',  
+                    localField: 'medicalAppointments.doctor', 
+                    foreignField: '_id', 
+                    as: 'doctor' 
+                }    
+            },
+            {
+                $unwind: '$doctor'
+            },
+            {
+                $project: {
+                    doctor: '$doctor.name',
+                    _id: "$medicalAppointments._id",
+                    date: '$medicalAppointments.date'
+                }   
+            }
+        ]
+    )
+
+    res.status(201).json({
+        message: 'Patient found',
+        patientFound
+    })
+}
 
 module.exports = MedicalappointmentController;
