@@ -7,13 +7,25 @@ const handleErrors = (error) => {
 
     console.log(error.message, error.code)
 
-    let errors = { email: '', password: '' }
+    let errors = { name: '', fatherLastName: '', motherLastName: '', email: '', password: '' }
 
     if (error.code === 11000) {
         errors.email = 'Email already exists'
     }
 
-    if (error._message === 'patient validation failed') {
+    if (error.errors.name) {
+        errors.name = 'You must to have a name'
+    }
+
+    if (error.errors.fatherLastName) {
+        errors.fatherLastName = 'You must to have a fatherLastName'
+    }
+
+    if (error.errors.motherLastName) {
+        errors.motherLastName = 'You must to have a motherLastName'
+    }
+
+    if (error.errors.email) {
         errors.email = 'Wrong email'
     }
 
@@ -26,13 +38,15 @@ const handleErrors = (error) => {
 
 patientController.register = async (req, res) => {
 
-    const { name, email, password, confirmPassword } = req.body
+    const { name, fatherLastName, motherLastName, email, password, confirmPassword } = req.body
 
     if (password === confirmPassword) {
 
         const newPatient = new Patient({
 
             name,
+            fatherLastName,
+            motherLastName,
             email,
             password
         })
