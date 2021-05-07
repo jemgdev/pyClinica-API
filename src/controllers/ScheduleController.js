@@ -40,7 +40,7 @@ ScheduleController.insertSchedule = async (req, res) => {
 
 //Eliminando horario
 ScheduleController.deleteSchedule = async (req, res) => {
-  const idSchedule = req.params.scheduleId;
+  const idSchedule = req.params.schedule-id;
   try {
     const deleteFound = await Schedule.findByIdAndDelete({ _id: idSchedule });
     const turnUpdated = await Turn.findByIdAndUpdate(deleteFound.turn, {
@@ -56,9 +56,9 @@ ScheduleController.deleteSchedule = async (req, res) => {
   }
 };
 
-//Actualizando Horario
+/*Actualizando Horario
 ScheduleController.updateSchedule = async (req, res) => {
-  const idSchedule = req.params.scheduleId;
+  const idSchedule = req.params.schedule-id;
   const scheduleSchema = new Schedule({
     scheduletime: req.body.scheduletime,
     availability: req.body.availability,
@@ -73,6 +73,6 @@ ScheduleController.updateSchedule = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-};
+};*/
 
 module.exports = ScheduleController;

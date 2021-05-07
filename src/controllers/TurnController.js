@@ -43,7 +43,7 @@ TurnController.insertTurn = async (req,res)=>{
 
 //eliminar turno
 TurnController.deleteTurn = async (req, res) => {
-    const idTurn = req.params.turnId;
+    const idTurn = req.params.turn-id;
     try {
       const deleteFound = await Turn.remove({ _id: idTurn });
       res.json(deleteFound);
@@ -54,7 +54,7 @@ TurnController.deleteTurn = async (req, res) => {
 
 // actualizar turno
 TurnController.updateTurn = async (req, res) => {
-    const idTurn = req.params.turnId;
+    const idTurn = req.params.turn-id;
     const turnSchema = new Turn({
         type: req.body.type,
         start_time: req.body.start_time,
@@ -74,7 +74,7 @@ TurnController.updateTurn = async (req, res) => {
 // Listar horarios de un turno
 TurnController.ListOnlySchedules = async (req, res) => {
 
-  const idTurn = req.params.turnId;
+  const idTurn = req.params.turn-id;
   const listSchedule = await Turn.findById(idTurn).populate('schedules')
 
   res.json(listSchedule)

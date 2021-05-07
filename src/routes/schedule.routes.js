@@ -1,9 +1,12 @@
 const { Router } = require('express')
 const { listSchedule,insertSchedule,deleteSchedule,updateSchedule } = require('../controllers/ScheduleController')
+const verifyTokenAdministrator = require('../middlewares/TokenVerifyAdministrator')
+const verifyToken = require('../middlewares/TokenVerify')
 const router = Router()
 
-router.get('/schedule/listSchedule', listSchedule)
-router.post('/schedule/insertSchedule', insertSchedule)
-router.delete('/schedule/deleteSchedule/:scheduleId', deleteSchedule)
-router.put('/schedule/updateSchedule/:scheduleId', updateSchedule)
+router.get('/schedule/listschedule',verifyToken,listSchedule)
+router.post('/schedule/insertschedule',verifyTokenAdministrator ,insertSchedule)
+router.delete('/schedule/deleteschedule/:schedule-id', verifyTokenAdministrator,deleteSchedule)
+//Comentado porque se actualiza desde cuando uno pide cita médica
+//router.put('/schedule/updateschedule/:schedule-id',verifyTokenAdministrator ,updateSchedule)
 module.exports = router

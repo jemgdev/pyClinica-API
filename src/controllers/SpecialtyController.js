@@ -84,7 +84,7 @@ SpecialtyController.insertSpecialty = async (req, res) => {
 
 //eliminar especialidad
 SpecialtyController.deleteSpecialty = async (req, res) => {
-  const idSpecialty = req.params.specialtyId;
+  const idSpecialty = req.params.specialty-id;
   try {
     const deleteFound = await Specialty.findByIdAndDelete({ _id: idSpecialty });
     const campusUpdated = await Campus.findByIdAndUpdate(deleteFound.campus, {
@@ -102,7 +102,7 @@ SpecialtyController.deleteSpecialty = async (req, res) => {
 
 // actualizar especialidad
 SpecialtyController.updateSpecialty = async (req, res) => {
-  const idSpecialty = req.params.specialtyId;
+  const idSpecialty = req.params.specialty-id;
   const specialtySchema = new Specialty({
     name: req.body.name,
     price: req.body.price,
@@ -121,12 +121,11 @@ SpecialtyController.updateSpecialty = async (req, res) => {
   }
 };
 
-// Listar doctores de una especialidad
+/* Listar doctores de una especialidad
 SpecialtyController.ListOnlyDoctors = async (req, res) => {
-  const idSpecialty = req.params.specialtyId;
+  const idSpecialty = req.params.specialty-id;
   const listDoctor = await Specialty.findById(idSpecialty).populate("doctors");
-
   res.json(listDoctor);
-};
+};*/
 
 module.exports = SpecialtyController;
