@@ -5,8 +5,8 @@ const { insertPrescription , updatePrescription, listPrescriptionByIdDoctor, lis
 const router = Router()
 
 router.post('/prescription/insert', verifyTokenDoctor,insertPrescription)
-router.put('/prescription/update/:id-prescription', verifyTokenDoctor,updatePrescription)
-router.get('/prescription/listprescriptions/doctor/:id-doctor', verifyTokenDoctor,listPrescriptionByIdDoctor)
-router.get('/prescription/listprescriptions/patient/:id-patient', verifyToken,listPrescriptionByIdPatient)
+router.put('/prescription/update/:idprescription', verifyTokenDoctor,updatePrescription)
+router.get('/prescription/listprescriptions/doctor/:iddoctor', verifyTokenDoctor,listPrescriptionByIdDoctor)
+router.get('/prescription/listprescriptions/patient/:idpatient', verifyToken,listPrescriptionByIdPatient)
 
 module.exports = router

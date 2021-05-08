@@ -104,7 +104,7 @@ MedicalappointmentController.deleteMedicalAppointment = async (req, res) => {
 };
 
 //actualizar cita medica por id por parametro y cambios enviado en json
-MedicalappointmentController.updateMedicappo = async (req, res) => {
+MedicalappointmentController.   updateMedicappo = async (req, res) => {
     const medicalappoid = req.params.medicalappoid;
     const medicalappointmentSchema = new Medicalappointment({
         patient: req.body.patient,
@@ -123,13 +123,13 @@ MedicalappointmentController.updateMedicappo = async (req, res) => {
 
 //Listado de Citas medicas por Doctor
 MedicalappointmentController.listMedicAppoIdDoctor = async (req, res) => {
-    const { idDoctor } = req.params
+    const { iddoctor } = req.params
 
     const doctorFound = await Doctor.aggregate(
         [
             {
                 $match: {
-                    _id: mongoose.Types.ObjectId(idDoctor)
+                    _id: mongoose.Types.ObjectId(iddoctor)
                 }
             },
             {
@@ -172,13 +172,13 @@ MedicalappointmentController.listMedicAppoIdDoctor = async (req, res) => {
 
 //Listado de Citas medicas por Paciente
 MedicalappointmentController.listMedicAppoByIdPatient = async (req, res) => {
-    const { idPatient } = req.params
+    const { idpatient } = req.params
 
     const patientFound = await Patient.aggregate(
         [
             {
                 $match: {
-                    _id: mongoose.Types.ObjectId(idPatient)
+                    _id: mongoose.Types.ObjectId(idpatient)
                 }
             },
             {

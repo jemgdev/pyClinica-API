@@ -72,13 +72,13 @@ PrescriptionController.updatePrescription = async (req, res) => {
 
 //Listado de Citas por Doctor
 PrescriptionController.listPrescriptionByIdDoctor = async (req, res) => {
-    const {idDoctor} = req.params
+    const {iddoctor} = req.params
 
     const doctorFound = await Doctor.aggregate(
         [
             {
                 $match: {
-                    _id : mongoose.Types.ObjectId(idDoctor)
+                    _id : mongoose.Types.ObjectId(iddoctor)
                 }   
             },
             {
@@ -121,13 +121,13 @@ PrescriptionController.listPrescriptionByIdDoctor = async (req, res) => {
 
 //Listado de Citas por Paciente
 PrescriptionController.listPrescriptionByIdPatient = async (req, res) => {
-    const {idPatient} = req.params
+    const {idpatient} = req.params
 
     const patientFound = await Patient.aggregate(
         [
             {
                 $match: {
-                    _id : mongoose.Types.ObjectId(idPatient)
+                    _id : mongoose.Types.ObjectId(idpatient)
                 }   
             },
             {
