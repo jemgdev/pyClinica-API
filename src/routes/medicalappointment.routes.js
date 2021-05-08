@@ -1,14 +1,13 @@
 const { Router } = require('express')
 const verifyTokenDoctor = require('../middlewares/TokenVerifyDoctor')
 const verifyToken = require('../middlewares/TokenVerify')
-const { listMedicalAppo, insertMedicAppo,deleteMedicappo,updateMedicappo,listMedicAppoIdDoctor,listMedicAppoByIdPatient,deleteMedicalAppointmentByDoctor , deleteMedicalAppointmentByPaciente} = require('../controllers/MedicalappointmentController')
+const { listMedicalAppo, insertMedicAppo,deleteMedicalAppointment,updateMedicappo,listMedicAppoIdDoctor,listMedicAppoByIdPatient} = require('../controllers/MedicalappointmentController')
 const router = Router()
 router.get('/medicalappointment/listmedicalappointment', listMedicalAppo)
 router.post('/medicalappointment/insertmedicalappointment/:id-schedule', insertMedicAppo)
-router.delete('/medicalappointment/deletemedicalappointment/:medicalappoid',verifyToken, deleteMedicappo)
+router.delete('/medicalappointment/deletemedicalappointment/:medicalappoid',verifyToken, deleteMedicalAppointment)
 router.put('/medicalappointment/updatemedicalappointment/:medicalappoid',verifyTokenDoctor, updateMedicappo)
 router.get('/medicalappointment/listmedicalappointmentbyid/doctor/:id-doctor', verifyTokenDoctor, listMedicAppoIdDoctor)
 router.get('/medicalappointment/listmedicalappointmentbyid/patient/:id-patient', verifyToken, listMedicAppoByIdPatient)
-router.delete('/medicalappointment/delete/doctor/:medicalappoid', verifyTokenDoctor, deleteMedicalAppointmentByDoctor)
-router.delete('/medicalappointment/delete/patient/:medicalappoid', verifyToken, deleteMedicalAppointmentByPaciente)
+
 module.exports = router
