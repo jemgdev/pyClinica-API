@@ -12,7 +12,7 @@ TurnController.listTurn = async (req, res) => {
 
 //insertar turno
 TurnController.insertTurn = async (req,res)=>{
-   const {idDoctor} = req.params
+   const idDoctor = req.params.doctorid
     const {type,start_time,end_time,schedules} = req.body   
     
     const turnSchema = new Turn({

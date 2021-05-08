@@ -73,7 +73,7 @@ PrescriptionController.updatePrescription = async (req, res) => {
 //Listado de Citas por Doctor
 PrescriptionController.listPrescriptionByIdDoctor = async (req, res) => {
     const {iddoctor} = req.params
-
+    console.log(iddoctor)
     const doctorFound = await Doctor.aggregate(
         [
             {

@@ -14,7 +14,7 @@ MedicalappointmentController.listMedicalAppo = async (req, res) => {
 
 //Insertar cita medica
 MedicalappointmentController.insertMedicAppo = async (req, res) => {
-    const { idSchedule } = req.params
+    const  idSchedule  = req.params.idschedule
     const { patient, doctor, date, description, price, prescription, status } = req.body;
     const medicalappointmentSchema = new Medicalappointment({
         patient,
@@ -157,6 +157,8 @@ MedicalappointmentController.listMedicAppoIdDoctor = async (req, res) => {
             {
                 $project: {
                     patient: '$patient.name',
+                    patient_p: '$patient.fatherLastName',
+                    patient_m: '$patient.motherLastName',
                     _id: "$medicalAppointment._id",
                     date: '$medicalAppointment.date'
                 }
@@ -206,6 +208,8 @@ MedicalappointmentController.listMedicAppoByIdPatient = async (req, res) => {
             {
                 $project: {
                     doctor: '$doctor.name',
+                    doctor_p: '$doctor.surname_p',
+                    doctor_m: '$doctor.surname_m',
                     _id: "$medicalAppointments._id",
                     date: '$medicalAppointments.date'
                 }
