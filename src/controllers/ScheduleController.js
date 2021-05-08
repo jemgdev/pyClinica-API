@@ -40,7 +40,7 @@ ScheduleController.insertSchedule = async (req, res) => {
 
 //Eliminando horario
 ScheduleController.deleteSchedule = async (req, res) => {
-  const idSchedule = req.params.schedule-id;
+  const idSchedule = req.params.scheduleid;
   try {
     const deleteFound = await Schedule.findByIdAndDelete({ _id: idSchedule });
     const turnUpdated = await Turn.findByIdAndUpdate(deleteFound.turn, {

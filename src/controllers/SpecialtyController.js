@@ -84,7 +84,7 @@ SpecialtyController.insertSpecialty = async (req, res) => {
 
 //eliminar especialidad
 SpecialtyController.deleteSpecialty = async (req, res) => {
-  const idSpecialty = req.params.specialty-id;
+  const idSpecialty = req.params.specialtyid;
   try {
     const deleteFound = await Specialty.findByIdAndDelete({ _id: idSpecialty });
     const campusUpdated = await Campus.findByIdAndUpdate(deleteFound.campus, {
@@ -102,7 +102,7 @@ SpecialtyController.deleteSpecialty = async (req, res) => {
 
 // actualizar especialidad
 SpecialtyController.updateSpecialty = async (req, res) => {
-  const idSpecialty = req.params.specialty-id;
+  const idSpecialty = req.params.specialtyid;
   const specialtySchema = new Specialty({
     name: req.body.name,
     price: req.body.price,
