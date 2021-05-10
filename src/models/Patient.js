@@ -47,6 +47,12 @@ const patientSchema = new Schema({
            type: Schema.Types.ObjectId,
            ref: 'medicalAppointment'
         }
+    ],
+    medicalHistories: [
+        {
+           type: Schema.Types.ObjectId,
+           ref: 'medicalhistory'
+        }
     ]
 }, {
     timestamps: true,
