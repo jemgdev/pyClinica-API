@@ -184,8 +184,21 @@ patientController.changePassword = async (req, res) => {
             error: handleErrors(error)
         })
     }
+}
 
-    
+patientController.getPatientById = async (req, res) => {
+
+    const patientId = req.id
+
+    const patientFound = await Patient.findById(patientId, {
+        medicalAppointments: 0,
+        medicalHistories: 0,
+        password: 0,
+        createdAt: 0,
+        updatedAt: 0
+    })
+
+    res.status(200).json(patientFound)
 }
 
 module.exports = patientController
