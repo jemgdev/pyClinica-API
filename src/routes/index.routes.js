@@ -7,7 +7,8 @@ const routers = {
     doctor: require('./doctor.routes'),
     turn: require('./turn.routes'),
     schedule: require('./schedule.routes'),
-    prescription : require('./prescription.routes')
+    prescription: require('./prescription.routes'),
+    medicalHistory: require('./medicalhistory.routes')
 }
 
 module.exports = routers
