@@ -1,7 +1,7 @@
 const { request } = require('express')
 const Doctor = require('../models/Doctor')
 const Turn = require('../models/Turn')
-
+const mongoose = require("mongoose")
 const TurnController = {}
 
 // listar turnos
@@ -45,7 +45,12 @@ TurnController.insertTurn = async (req,res)=>{
 TurnController.deleteTurn = async (req, res) => {
     const idTurn = req.params.turnid;
     try {
-      const deleteFound = await Turn.remove({ _id: idTurn });
+      await Doctor.findOneAndUpdate({turn: idTurn},{
+        $pull:{
+          turn: idTurn
+        }
+      });
+      const deleteFound = await Turn.findByIdAndDelete( idTurn );
       res.json(deleteFound);
     } catch (error) {
       console.log(error);
@@ -78,6 +83,56 @@ TurnController.ListOnlySchedules = async (req, res) => {
   const listSchedule = await Turn.findById(idTurn).populate('schedules')
 
   res.json(listSchedule)
+}
+
+// Listar horarios por Doctor
+TurnController.listSchedulesIdDoctor = async (req, res) => {
+  const { iddoctor } = req.params
+
+  const doctorFound = await Doctor.aggregate(
+      [
+          {
+              $match: {
+                  _id: mongoose.Types.ObjectId(iddoctor)
+              }
+          },
+          {
+              $lookup: {
+                  from: 'turns',
+                  localField: 'turn',
+                  foreignField: '_id',
+                  as: 'turn'
+              }
+          },
+          {
+              $unwind: '$turn'
+          },
+          {
+              $lookup: {
+                  from: 'schedules',
+                  localField: 'turn.schedules',
+                  foreignField: '_id',
+                  as: 'schedules'
+              }
+          },
+          {
+              $unwind: '$schedules'
+          },
+          {
+              $project: {
+                  _id:'$schedules._id',
+                  doctor: '$name',
+                  turn: '$turn.type',
+                  schedule: '$schedules.scheduletime'
+              }
+          }
+      ]
+  )
+
+  res.status(201).json({
+      message: 'Doctor found',
+      doctorFound
+  })
 }
 
 module.exports = TurnController

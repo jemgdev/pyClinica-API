@@ -15,13 +15,14 @@ MedicalappointmentController.listMedicalAppo = async (req, res) => {
 //Insertar cita medica
 MedicalappointmentController.insertMedicAppo = async (req, res) => {
     const  idSchedule  = req.params.idschedule
-    const { patient, doctor, date, description, price, prescription, status } = req.body;
+    const { patient, doctor, date, description, price } = req.body;
     const medicalappointmentSchema = new Medicalappointment({
         patient,
         doctor,
         date,
         description,
-        price
+        price,
+        schedule: idSchedule
     });
     try {
         const medicalCreate = await medicalappointmentSchema.save();

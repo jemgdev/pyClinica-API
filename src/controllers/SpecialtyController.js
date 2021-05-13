@@ -14,13 +14,13 @@ SpecialtyController.listSpecialty = async (req, res) => {
 // Listado de especialidades por campus
 SpecialtyController.listSpecialtyByCampus = async (req, res) => {
 
-  const { idCampus } = req.params
+  const { campusid } = req.params
 
   const campusFound = await Campus.aggregate(
       [
           {
               $match: {
-                  _id: mongoose.Types.ObjectId(idCampus)
+                  _id: mongoose.Types.ObjectId(campusid)
               }
           },
           {

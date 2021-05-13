@@ -69,4 +69,13 @@ doctorSchema.statics.login = async (password, encryptedPassword) => {
     throw Error('Password is wrong')
 }
 
+doctorSchema.statics.changePassword = async (password) => {
+
+    const salt = await bcrypt.genSalt(10)
+    passwordEncrypted = await bcrypt.hash(password, salt)
+
+    return passwordEncrypted
+}
+
+
 module.exports = model('doctor', doctorSchema)

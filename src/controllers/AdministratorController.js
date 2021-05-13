@@ -156,6 +156,27 @@ AdministratorController.changePassword = async (req, res) => {
         })
     }
 }
-    
+
+AdministratorController.InfoAdministratorById = async (req, res) => {
+
+    try {
+        const administratorGet = await Administrator.findById(req.id)
+        const administratorInfo={
+            "avatar": administratorGet.avatar,
+            "name": administratorGet.name,
+            "surname_p": administratorGet.surname_p,
+            "surname_m": administratorGet.surname_m,
+            "mail": administratorGet.mail,
+            "phone": administratorGet.phone,
+            "dni": administratorGet.dni,
+            "gender": administratorGet.gender,
+            "age": administratorGet.age,
+        }
+        res.status(201).json(administratorInfo)
+    } catch (error) {
+        res.error.json(administratorGet)
+    }
+}
+
 
 module.exports = AdministratorController

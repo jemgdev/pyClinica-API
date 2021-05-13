@@ -91,11 +91,11 @@ DoctorController.listDoctors = async (req, res) => {
 
 DoctorController.deleteDoctors = async (req, res) => {
 
-    const { idDoctor } = req.params
+    const { iddoctor } = req.params
 
     try {
 
-        const doctorDeleted = await Doctor.findByIdAndDelete(idDoctor)
+        const doctorDeleted = await Doctor.findByIdAndDelete(iddoctor)
 
         const specialtyFound = await Specialty.findByIdAndUpdate(doctorDeleted.specialty, {
             $pull: {
@@ -123,10 +123,8 @@ DoctorController.updateDoctorById = async (req, res) => {
 
     const { name, surname_p, surname_m, email, password, phone, dni, age } = req.body
 
-    const { idDoctor } = req.params
-
     try {
-        const doctorUpdated = await Doctor.findByIdAndUpdate(idDoctor, {
+        const doctorUpdated = await Doctor.findByIdAndUpdate(req.id, {
             name,
             surname_p,
             surname_m,
@@ -195,13 +193,13 @@ DoctorController.login = async (req, res) => {
 //Listados de Doctores por especialidad
 DoctorController.listDoctorBySpecialty = async (req, res) => {
 
-    const { idSpecialty } = req.params
+    const { idspecialty } = req.params
 
     const specialtyFound = await Specialty.aggregate(
         [
             {
                 $match: {
-                    _id: mongoose.Types.ObjectId(idSpecialty)
+                    _id: mongoose.Types.ObjectId(idspecialty)
                 }
             },
             {
@@ -230,6 +228,53 @@ DoctorController.listDoctorBySpecialty = async (req, res) => {
         message: "Specialty found",
         specialtyFound
     })
+}
+
+DoctorController.changePassword = async (req, res) => {
+
+    const { password, newPassword } = req.body
+
+    const doctorfound = await Doctor.findById(req.id)
+
+    try {
+        
+        if (await Doctor.login(password, doctorfound.password)) {
+
+            const doctorUpdated = await Doctor.findByIdAndUpdate(req.id, {
+                password: await Doctor.changePassword(newPassword)
+            }, {
+                new: true
+            })
+    
+            res.status(201).json(doctorUpdated)
+        }
+        else {
+    
+            res.status(404).json({
+                error: 'Passwords are differents'
+            })
+        }
+    } catch (error) {
+        
+        res.status(404).json({
+            error: handleErrors(error)
+        })
+    }
+}
+
+DoctorController.getDoctorById = async (req, res) => {
+
+    const doctorId = req.id
+
+    const doctorFound = await Doctor.findById(doctorId, {
+        medicalAppointments: 0,
+        medicalHistories: 0,
+        password: 0,
+        createdAt: 0,
+        updatedAt: 0
+    })
+
+    res.status(200).json(doctorFound)
 }
 
 module.exports = DoctorController

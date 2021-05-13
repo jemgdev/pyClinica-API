@@ -5,7 +5,7 @@ const patientController = {}
 
 const handleErrors = (error) => {
 
-    console.log(error.message, error.code)
+    console.log(error.message)
 
     let errors = { name: '', fatherLastName: '', motherLastName: '', email: '', password: '' }
 
@@ -102,12 +102,16 @@ patientController.login = async (req, res) => {
             
         } catch (error) {
 
-            console.log(error)
-            
             res.status(404).json({
+                error: 'Password is not registered' 
+            })
+            //console.log(error)
+            
+            /*res.status(404).json({
                 auth: false,
                 error: handleErrors(error)
-            })
+            
+            })*/
         }
     }
     else {
@@ -115,12 +119,13 @@ patientController.login = async (req, res) => {
         res.status(404).json({
             error: 'Email is not registered' 
         })
+
     }
 }
 
 patientController.changePersonalInformation = async (req, res) => {
 
-    const { name, fatherLastName, motherLastNmae, phoneNumber, dni, age, gender, civilStatus, department, province, district, address, addressReference } = req.body
+    const { name, fatherLastName, motherLastName, phoneNumber, dni, age, gender, civilStatus, department, province, district, address, addressReference } = req.body
 
     try {
 
@@ -128,7 +133,7 @@ patientController.changePersonalInformation = async (req, res) => {
 
             name,
             fatherLastName,
-            motherLastNmae,
+            motherLastName,
             phoneNumber,
             dni,
             age,

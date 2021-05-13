@@ -1,6 +1,7 @@
 const Prescription = require('../models/Prescription')
 const Patient = require('../models/Patient')
 const Doctor = require('../models/Doctor')
+const History =require('../models/MedicalHistory')
 const mongoose = require('mongoose')
 
 const PrescriptionController = {}
@@ -17,28 +18,9 @@ PrescriptionController.insertPrescription = async (req, res) => {
 
     try {
         const prescriptionSaved = await newPrescription.save()
-
-        const patientUpdated = await Patient.findByIdAndUpdate(patient,{
-            $addToSet:{
-                prescription: prescriptionSaved._id
-            }
-        },{
-            new: true
-        })
-
-        const doctorUpdated = await Doctor.findByIdAndUpdate(doctor, {
-            $addToSet: {
-                prescription: prescriptionSaved._id
-            }
-        },{
-            new: true
-        })
-
         res.status(201).json({
             message: 'Prescription saved',
-            prescriptionSaved,
-            patientUpdated,
-            doctorUpdated
+            prescriptionSaved
         })
     } catch (error) {
         res.status(401).json({
@@ -50,10 +32,10 @@ PrescriptionController.insertPrescription = async (req, res) => {
 //Actualizar las recetas medicas
 PrescriptionController.updatePrescription = async (req, res) => {
     const {detail} = req.body
-    const {idPrescription} = req.params
+    const {idprescription} = req.params
 
     try{
-        const prescriptionUpdated = await Prescription.findByIdAndUpdate(idPrescription, {
+        const prescriptionUpdated = await Prescription.findByIdAndUpdate(idprescription, {
             detail
         },{
             new: true
@@ -70,15 +52,15 @@ PrescriptionController.updatePrescription = async (req, res) => {
     } 
 }
 
-//Listado de Citas por Doctor
-PrescriptionController.listPrescriptionByIdDoctor = async (req, res) => {
-    const {iddoctor} = req.params
-    console.log(iddoctor)
-    const doctorFound = await Doctor.aggregate(
+//Listado de Citas por Historial
+PrescriptionController.listPrescriptionByIdHistory = async (req, res) => {
+    const {idhistory} = req.params
+    console.log(idhistory)
+    const prescriptionFound = await History.aggregate(
         [
             {
                 $match: {
-                    _id : mongoose.Types.ObjectId(iddoctor)
+                    _id : mongoose.Types.ObjectId(idhistory)
                 }   
             },
             {
@@ -90,22 +72,8 @@ PrescriptionController.listPrescriptionByIdDoctor = async (req, res) => {
                 }    
             },
             {
-                $unwind: '$prescription'
-            },
-            {
-                $lookup: {
-                    from: 'patients',  
-                    localField: 'patient', 
-                    foreignField: 'patients._id', 
-                    as: 'patient' 
-                }    
-            },
-            {
-                $unwind: '$patient'
-            },
-            {
                 $project: {
-                    patient: '$patient.email', 
+                    _id: '$prescription._id', 
                     detail: '$prescription.detail', 
                     date: '$prescription.date' 
                 }   
@@ -114,59 +82,9 @@ PrescriptionController.listPrescriptionByIdDoctor = async (req, res) => {
     )
 
     res.status(201).json({
-        message: 'Doctor found',
-        doctorFound
+        message: 'Prescription found',
+        prescriptionFound:{_id: prescriptionFound[0]._id[0], detail: prescriptionFound[0].detail[0], date: prescriptionFound[0].date[0]}
     })
 }
-
-//Listado de Citas por Paciente
-PrescriptionController.listPrescriptionByIdPatient = async (req, res) => {
-    const {idpatient} = req.params
-
-    const patientFound = await Patient.aggregate(
-        [
-            {
-                $match: {
-                    _id : mongoose.Types.ObjectId(idpatient)
-                }   
-            },
-            {
-                $lookup: {
-                    from: 'prescriptions',  
-                    localField: 'prescription', 
-                    foreignField: '_id', 
-                    as: 'prescription' 
-                }    
-            },
-            {
-                $unwind: '$prescription' 
-            },
-            {
-                $lookup: {
-                    from: 'doctors',  
-                    localField: 'doctor', 
-                    foreignField: 'doctors._id', 
-                    as: 'doctor' 
-                }    
-            },
-            {
-                $unwind: '$doctor'
-            },
-            {
-                $project: {
-                    doctor: '$doctor.name', 
-                    detail: '$prescription.detail', 
-                    date: '$prescription.date' 
-                }   
-            }
-        ]
-    )
-
-    res.status(201).json({
-        message: 'Doctor found',
-        patientFound
-    })
-}
-
 
 module.exports = PrescriptionController

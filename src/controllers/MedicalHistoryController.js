@@ -3,6 +3,7 @@ const MedicalAppointment = require('../models/Medicalappointment')
 const MedicalHistory = require('../models/MedicalHistory')
 const Patient = require('../models/Patient')
 const Doctor = require('../models/Doctor')
+const Schedule = require('../models/Schedule')
 
 const medicalHistoryController = {}
 
@@ -16,34 +17,41 @@ medicalHistoryController.insertMedicalHistory = async (req, res) => {
         ...medicalAppointmentDeleted._doc,
         prescription: idprescription
     })
-
-    const promises = await Promise.all(
-        [
-            await Doctor.findByIdAndUpdate(medicalAppointmentDeleted.doctor, {
-                $pull: {
-                    medicalAppointment: medicalAppointmentDeleted._id
-                },
-                $addToSet: {
-                    medicalHistories: medicalAppointmentDeleted._id
-                }
-            }, {
-                new: true
-            }),
-            await Patient.findByIdAndUpdate(medicalAppointmentDeleted.patient, {
-                $pull: {
-                    medicalAppointments: medicalAppointmentDeleted._id
-                },
-                $addToSet: {
-                    medicalHistories: medicalAppointmentDeleted._id
-                }
-            }, {
-                new: true
-            }),
-            await newMedicalHistory.save()
-        ]
-    )
-
-    res.status(201).json(promises[2])
+    try {
+        const promises = await Promise.all(
+            [
+                await Doctor.findByIdAndUpdate(medicalAppointmentDeleted.doctor, {
+                    $pull: {
+                        medicalAppointment: medicalAppointmentDeleted._id
+                    },
+                    $addToSet: {
+                        medicalHistories: medicalAppointmentDeleted._id
+                    }
+                }, {
+                    new: true
+                }),
+                await Patient.findByIdAndUpdate(medicalAppointmentDeleted.patient, {
+                    $pull: {
+                        medicalAppointments: medicalAppointmentDeleted._id
+                    },
+                    $addToSet: {
+                        medicalHistories: medicalAppointmentDeleted._id
+                    }
+                }, {
+                    new: true
+                }),
+                await newMedicalHistory.save(),               
+            ]
+        )
+        await Schedule.findByIdAndUpdate(medicalAppointmentDeleted.schedule, {
+            availability:true,
+        })
+        console.log(medicalAppointmentDeleted.schedule)
+        res.status(201).json(promises[2])
+    } catch (error) {
+        console.log(error)
+    }
+    
 }
 
 medicalHistoryController.listByPatientId = async (req, res) => {

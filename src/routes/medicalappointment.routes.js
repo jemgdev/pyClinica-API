@@ -5,7 +5,7 @@ const { listMedicalAppo, insertMedicAppo,deleteMedicalAppointment,updateMedicapp
 const router = Router()
 router.get('/medicalappointment/listmedicalappointment', listMedicalAppo)
 router.post('/medicalappointment/insertmedicalappointment/:idschedule', verifyToken,insertMedicAppo)
-router.delete('/medicalappointment/deletemedicalappointment/:medicalappoid',verifyToken, deleteMedicalAppointment)
+//router.delete('/medicalappointment/deletemedicalappointment/:medicalappoid',verifyToken, deleteMedicalAppointment)
 router.put('/medicalappointment/updatemedicalappointment/:medicalappoid',verifyTokenDoctor, updateMedicappo)
 router.get('/medicalappointment/listmedicalappointmentbyid/doctor/:iddoctor', verifyTokenDoctor, listMedicAppoIdDoctor)
 router.get('/medicalappointment/listmedicalappointmentbyid/patient/:idpatient', verifyToken, listMedicAppoByIdPatient)
