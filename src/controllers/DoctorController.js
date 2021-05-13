@@ -14,20 +14,23 @@ const handleErrors = (error) => {
         errors.email = 'Email already exists'
     }
 
-    if (error.errors.name) {
-        errors.name = 'You must to have a name'
-    }
-
-    if (error.errors.surname_p) {
-        errors.surname_p = 'You must to have a fatherLastName'
-    }
-
-    if (error.errors.surname_m) {
-        errors.surname_m = 'You must to have a motherLastName'
-    }
-
-    if (error.errors.email) {
-        errors.email = 'Wrong email'
+    if (error.errors) {
+        
+        if (error.errors.name) {
+            errors.name = 'You must to have a name'
+        }
+    
+        if (error.errors.surname_p) {
+            errors.surname_p = 'You must to have a fatherLastName'
+        }
+    
+        if (error.errors.surname_m) {
+            errors.surname_m = 'You must to have a motherLastName'
+        }
+    
+        if (error.errors.email) {
+            errors.email = 'Wrong email'
+        }
     }
 
     if (error.message === 'Password is wrong') {

@@ -5,7 +5,7 @@ const patientController = {}
 
 const handleErrors = (error) => {
 
-    console.log(error.message)
+    console.log(error.message, error.code)
 
     let errors = { name: '', fatherLastName: '', motherLastName: '', email: '', password: '' }
 
@@ -13,20 +13,23 @@ const handleErrors = (error) => {
         errors.email = 'Email already exists'
     }
 
-    if (error.errors.name) {
-        errors.name = 'You must to have a name'
-    }
+    if (error.errors) {
 
-    if (error.errors.fatherLastName) {
-        errors.fatherLastName = 'You must to have a fatherLastName'
-    }
+        if (error.errors.name) {
+            errors.name = 'You must to have a name'
+        }
 
-    if (error.errors.motherLastName) {
-        errors.motherLastName = 'You must to have a motherLastName'
-    }
-
-    if (error.errors.email) {
-        errors.email = 'Wrong email'
+        if (error.errors.fatherLastName) {
+            errors.fatherLastName = 'You must to have a fatherLastName'
+        }
+    
+        if (error.errors.motherLastName) {
+            errors.motherLastName = 'You must to have a motherLastName'
+        }
+    
+        if (error.errors.email) {
+            errors.email = 'Wrong email'
+        }
     }
 
     if (error.message === 'Password is wrong') {
@@ -56,7 +59,7 @@ patientController.register = async (req, res) => {
             const patientSaved = await newPatient.save()
 
             res.status(201).json(patientSaved)            
-        } catch (error) {
+        } catch (error) {    
             
             res.status(401).json({
                 error: handleErrors(error)
@@ -65,6 +68,7 @@ patientController.register = async (req, res) => {
 
     } 
     else {
+        
         res.status(401).json({
             error: 'Passwords are differents'
         })
