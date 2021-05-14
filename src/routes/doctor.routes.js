@@ -12,5 +12,5 @@ router.get('/doctor/list-specialty/:idspecialty', verifyToken, listDoctorBySpeci
 router.get('/doctor/list/admin',verifyTokenAdministrator,listDoctors)
 router.delete('/doctor/delete/:iddoctor',verifyTokenAdministrator, deleteDoctors)
 router.put('/doctor/change-password', verifyTokenDoctor, changePassword)
-router.get('/doctor', verifyTokenDoctor, getDoctorById)
+router.get('/doctor/get-information', verifyTokenDoctor, getDoctorById)
 module.exports = router

@@ -5,7 +5,7 @@ const router = Router()
 
 router.post('/patient/register', register)
 router.post('/patient/login', login)
-router.get('/patient', verifyToken, getPatientById)
+router.get('/patient/get-information', verifyToken, getPatientById)
 router.put('/patient/change-information', verifyToken, changePersonalInformation)
 router.put('/patient/change-password', verifyToken, changePassword)
 
