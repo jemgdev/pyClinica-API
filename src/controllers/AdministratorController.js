@@ -6,18 +6,18 @@ const handleErrors = (error) => {
 
     console.log(error.message, error.code)
 
-    let errors = { email: '', password: '' }
+    let errors = {email: '', password: '' }
 
     if (error.code === 11000) {
         errors.email = 'Correo ya exite'
     }
 
-    if (error._message === 'Verificación de administrador fallida') {
+    if (error.errors.email) {
         errors.email = 'Correo incorrecto'
     }
 
     if (error.message === 'Contraseña incorrecta') {
-        errors.password = 'Contraseña incorrecta'
+        errors.password = 'Contraseñaa incorrecta'
     }
 
     return errors
@@ -35,7 +35,7 @@ AdministratorController.loginAdministrator = async (req, res) => {
     const { email, password } = req.body
 
     const administratorFound = await Administrator.findOne({ email })
-
+    console.log("correo: "+administratorFound);
     if (administratorFound) {
 
         try {
@@ -61,29 +61,26 @@ AdministratorController.loginAdministrator = async (req, res) => {
             
         } catch (error) {
 
-            console.log(error)
-            
             res.status(404).json({
-                error: handleErrors(error)
+                error: 'Constraseña incorrecta' 
             })
         }
-    }
-    else {
+    }else {
 
         res.status(404).json({
-            error: 'Email is not registered' 
+            error: 'El correo no esta registrado' 
         })
     }
 }
 
 AdministratorController.insertAdministrator = async (req, res) => {
-    const { name,surname_p,surname_m, mail,password,phone,dni,gender, age} = req.body   
+    const { name,surname_p,surname_m, email,password,phone,dni,gender, age} = req.body   
     console.log(name)
     const administratorSchema = new Administrator({
         name,
         surname_p,
         surname_m,
-        mail,
+        email,
         password,
         phone,
         dni,
@@ -116,8 +113,19 @@ AdministratorController.changePersonalInformation = async (req, res) => {
             }, {
                 new: true
             })
-        
-            res.status(201).json(administratorUpdated)
+
+            administradorUpdatedInfo={
+                "avatar": administratorUpdated.avatar,
+                "name": administratorUpdated.name,
+                "surname_p": administratorUpdated.surname_p,
+                "surname_m": administratorUpdated.surname_m,
+                "phone": administratorUpdated.phone,
+                "dni": administratorUpdated.dni,
+                "gender": administratorUpdated.gender,
+                "age": administratorUpdated.age,
+            }
+
+            res.status(201).json(administradorUpdatedInfo)
             
         } catch (error) {
     
@@ -139,21 +147,21 @@ AdministratorController.changePassword = async (req, res) => {
 
             const administratorUpdated = await Administrator.findByIdAndUpdate(req.id, {
                 password: await Administrator.changePassword(newPassword)
+            },{
+                new: true
             })
     
-            res.status(201).json(administratorUpdated)
+            res.status(201).json({status: true})
         }
         else {
     
             res.status(404).json({
-                error: 'Passwords are differents'
+                error: 'Las contraseñas son diferentes'
             })
         }
     } catch (error) {
         
-        res.status(404).json({
-            error: handleErrors(error)
-        })
+        res.status(404).json({error:'Contraseña incorrecta'})
     }
 }
 
@@ -166,7 +174,7 @@ AdministratorController.InfoAdministratorById = async (req, res) => {
             "name": administratorGet.name,
             "surname_p": administratorGet.surname_p,
             "surname_m": administratorGet.surname_m,
-            "mail": administratorGet.mail,
+            "email": administratorGet.email,
             "phone": administratorGet.phone,
             "dni": administratorGet.dni,
             "gender": administratorGet.gender,

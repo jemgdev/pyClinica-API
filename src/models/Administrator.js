@@ -7,11 +7,11 @@ const administrator = new Schema(
     name: { type: String },
     surname_p: { type: String },
     surname_m: { type: String },
-    mail: {
+    email: {
       type: String,
       require: true,
       unique: true,
-      validate: [isEmail, "invalid email"],
+      validate: [isEmail, "Correo invalido"],
     },
     password: { type: String, require: true },
     avatar: {
