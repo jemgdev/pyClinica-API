@@ -105,22 +105,18 @@ patientController.login = async (req, res) => {
             }
             
         } catch (error) {
-
+            
             res.status(404).json({
-                error: 'Password is not registered' 
-            })
-            //console.log(error)
-            
-            /*res.status(404).json({
+
                 auth: false,
-                error: handleErrors(error)
-            
-            })*/
+                error: handleErrors(error)            
+            })
         }
     }
     else {
 
         res.status(404).json({
+            auth: false,
             error: 'Email is not registered' 
         })
 
