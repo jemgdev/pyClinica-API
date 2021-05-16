@@ -124,7 +124,7 @@ DoctorController.deleteDoctors = async (req, res) => {
 //Actualizar los datos del Doctor
 DoctorController.updateDoctorById = async (req, res) => {
 
-    const { name, surname_p, surname_m, email, password, phone, dni, age } = req.body
+    const { name, surname_p, surname_m, email, phone, dni, age } = req.body
 
     try {
         const doctorUpdated = await Doctor.findByIdAndUpdate(req.id, {
@@ -132,7 +132,6 @@ DoctorController.updateDoctorById = async (req, res) => {
             surname_p,
             surname_m,
             email,
-            password,
             phone,
             dni,
             age
@@ -143,6 +142,8 @@ DoctorController.updateDoctorById = async (req, res) => {
         res.status(201).json(doctorUpdated)
 
     } catch (error) {
+
+        console.log(error)
         res.status(500).json({
             message: 'There was an error in the user update'
         })
