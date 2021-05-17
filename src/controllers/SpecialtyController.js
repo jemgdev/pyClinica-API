@@ -46,7 +46,7 @@ SpecialtyController.listSpecialtyByCampus = async (req, res) => {
   )
 
   res.status(201).json({
-      message: "Specialty found",
+      message: "Especialidades encontradas correctamente",
       campusFound
   })
 
@@ -76,7 +76,10 @@ SpecialtyController.insertSpecialty = async (req, res) => {
       }
     );
 
-    res.json(especialityCreate);
+    //res.json(especialityCreate);
+    res.status(201).json({
+      message: "Especialidad registrada correctamente",
+    });
   } catch (error) {
     console.log(error);
   }
@@ -94,7 +97,10 @@ SpecialtyController.deleteSpecialty = async (req, res) => {
   }, {
       new: true
   })
-    res.json(deleteFound);
+    //res.json(deleteFound);
+    res.status(201).json({
+      message: "Especialidad eliminada correctamente",
+    });
   } catch (error) {
     console.log(error);
   }
@@ -115,7 +121,10 @@ SpecialtyController.updateSpecialty = async (req, res) => {
       { $set: req.body },
       { new: true }
     );
-    res.json(updateFound);
+    //res.json(updateFound);
+    res.status(201).json({
+      message: "Especialidad actualizada correctamente",
+    });
   } catch (error) {
     console.log(error);
   }

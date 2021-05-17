@@ -12,7 +12,6 @@ ScheduleController.listSchedule = async (req, res) => {
 // Insertando horario
 ScheduleController.insertSchedule = async (req, res) => {
   const { scheduletime, availability, turn } = req.body;
-
   const ScheduleSchema = new Schedule({
     scheduletime,
     availability,
@@ -31,8 +30,10 @@ ScheduleController.insertSchedule = async (req, res) => {
         new: true,
       }
     );
-    res.json(ScheduleCreate);
-    console.log(turn);
+   //res.json(ScheduleCreate);
+    res.status(201).json({
+      message: "Horario registrado correctamente",
+    });
   } catch (error) {
     console.log(error);
   }
@@ -50,7 +51,10 @@ ScheduleController.deleteSchedule = async (req, res) => {
   }, {
       new: true
   })
-    res.json(deleteFound);
+    //res.json(deleteFound);
+    res.status(201).json({
+      message: "Horario eliminado correctamente",
+    });
   } catch (error) {
     console.log(error);
   }

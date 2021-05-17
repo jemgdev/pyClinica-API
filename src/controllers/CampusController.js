@@ -20,7 +20,10 @@ CampusController.insertCampus = async (req, res) => {
   });
   try {
     const campusCreate = await campusSchema.save();
-    res.json(campusCreate);
+    //res.json(campusCreate);
+    res.status(201).json({
+      message: "Campus registrado correctamente",
+    });
   } catch (error) {
     console.log(error);
   }
@@ -33,7 +36,10 @@ CampusController.deleteCampus = async (req, res) => {
 
   try {
     const deleteFound = await Campus.findByIdAndRemove({ _id: idCampus });
-    res.json(deleteFound);
+    //res.json(deleteFound);
+    res.status(201).json({
+      message: "Campus eliminado correctamente",
+    });
   } catch (error) {
     console.log(error);
   }
@@ -54,7 +60,10 @@ CampusController.updateCampus = async (req, res) => {
     const updateFound = await Campus.findOneAndUpdate({ _id: idCampus }, {$set: req.body},{ 
       new: true 
     });
-    res.json(updateFound);
+    //res.json(updateFound);
+    res.status(201).json({
+      message: "Campus actualizado correctamente",
+    });
   } catch (error) {
     console.log(error);
   }
@@ -67,7 +76,11 @@ CampusController.ListOnlySpecialties = async (req, res) => {
   console.log(idCampus)
   const listSpecialty = await Campus.findById(idCampus).populate('specialty')
 
-  res.json(listSpecialty)
+  //res.json(listSpecialty)
+  res.status(201).json({
+    message: "Especialidades encontradas correctamente",
+    listSpecialty
+  });
 }
 
 module.exports = CampusController;
