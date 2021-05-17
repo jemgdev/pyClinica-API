@@ -17,7 +17,9 @@ medicalHistoryController.insertMedicalHistory = async (req, res) => {
         ...medicalAppointmentDeleted._doc,
         prescription: idprescription
     })
+
     try {
+        
         const promises = await Promise.all(
             [
                 await Doctor.findByIdAndUpdate(medicalAppointmentDeleted.doctor, {
@@ -43,13 +45,18 @@ medicalHistoryController.insertMedicalHistory = async (req, res) => {
                 await newMedicalHistory.save(),               
             ]
         )
+
         await Schedule.findByIdAndUpdate(medicalAppointmentDeleted.schedule, {
             availability:true,
         })
-        console.log(medicalAppointmentDeleted.schedule)
+
         res.status(201).json(promises[2])
+
     } catch (error) {
-        console.log(error)
+        
+        res.status(404).json({
+            message: `There was an error with the insert: ${error.message}`
+        })
     }
     
 }

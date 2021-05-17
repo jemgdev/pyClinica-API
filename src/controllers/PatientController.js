@@ -58,7 +58,9 @@ patientController.register = async (req, res) => {
 
             const patientSaved = await newPatient.save()
 
-            res.status(201).json(patientSaved)            
+            res.status(201).json({
+                message: 'The patient has been registered successfully'
+            })            
         } catch (error) {    
             
             res.status(401).json({
@@ -149,7 +151,9 @@ patientController.changePersonalInformation = async (req, res) => {
             new: true
         })
     
-        res.status(201).json(patientUpdated)
+        res.status(201).json({
+            message: 'The patient has been updated successfully'
+        })
         
     } catch (error) {
 
@@ -175,7 +179,9 @@ patientController.changePassword = async (req, res) => {
                 new: true
             })
     
-            res.status(201).json(patientUpdated)
+            res.status(201).json({
+                message: 'The password has been updated successfully'
+            })
         }
         else {
     
