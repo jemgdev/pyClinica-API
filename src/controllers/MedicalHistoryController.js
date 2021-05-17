@@ -56,13 +56,11 @@ medicalHistoryController.insertMedicalHistory = async (req, res) => {
 
 medicalHistoryController.listByPatientId = async (req, res) => {
 
-    const { idpatient } = req.params
-
     const medicalHistories = await Patient.aggregate(
         [
             {
                 $match: {
-                    _id: mongoose.Types.ObjectId(idpatient)
+                    _id: mongoose.Types.ObjectId(req.id)
                 }
             },
             {
@@ -104,13 +102,11 @@ medicalHistoryController.listByPatientId = async (req, res) => {
 
 medicalHistoryController.listByDoctortId = async (req, res) => {
 
-    const { idoctor } = req.params
-
     const medicalHistories = await Doctor.aggregate(
         [
             {
                 $match: {
-                    _id: mongoose.Types.ObjectId(idoctor)
+                    _id: mongoose.Types.ObjectId(req.id)
                 }
             },
             {

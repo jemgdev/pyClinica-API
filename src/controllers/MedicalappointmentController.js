@@ -124,13 +124,12 @@ MedicalappointmentController.   updateMedicappo = async (req, res) => {
 
 //Listado de Citas medicas por Doctor
 MedicalappointmentController.listMedicAppoIdDoctor = async (req, res) => {
-    const { iddoctor } = req.params
 
     const doctorFound = await Doctor.aggregate(
         [
             {
                 $match: {
-                    _id: mongoose.Types.ObjectId(iddoctor)
+                    _id: mongoose.Types.ObjectId(req.id)
                 }
             },
             {
@@ -175,13 +174,12 @@ MedicalappointmentController.listMedicAppoIdDoctor = async (req, res) => {
 
 //Listado de Citas medicas por Paciente
 MedicalappointmentController.listMedicAppoByIdPatient = async (req, res) => {
-    const { idpatient } = req.params
 
     const patientFound = await Patient.aggregate(
         [
             {
                 $match: {
-                    _id: mongoose.Types.ObjectId(idpatient)
+                    _id: mongoose.Types.ObjectId(req.id)
                 }
             },
             {
