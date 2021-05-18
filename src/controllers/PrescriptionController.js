@@ -80,7 +80,6 @@ PrescriptionController.listPrescriptionByIdHistory = async (req, res) => {
     )
 
     res.status(201).json({
-        message: 'Prescription found',
         prescriptionFound:{_id: prescriptionFound[0]._id[0], detail: prescriptionFound[0].detail[0], date: prescriptionFound[0].date[0]}
     })
 }
