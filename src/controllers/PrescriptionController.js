@@ -19,12 +19,11 @@ PrescriptionController.insertPrescription = async (req, res) => {
     try {
         const prescriptionSaved = await newPrescription.save()
         res.status(201).json({
-            message: 'Prescription saved',
-            prescriptionSaved
+            message: 'La receta medica ha sido creada con exito'
         })
     } catch (error) {
         res.status(401).json({
-            message: 'Unsaved prescription'
+            message: 'La receta medica no ha sido creada'
         })
     }
 }
@@ -42,12 +41,11 @@ PrescriptionController.updatePrescription = async (req, res) => {
         })
         
         res.status(201).json({
-            message: 'Prescription has been updated',
-            prescriptionUpdated
+            message: 'La receta medica ha sido actualizada con exito'
         })
     }catch(error){
         res.status(201).json({
-            error: 'Prescription has not been updated'
+            error: 'La receta medica no ha sido actualizada'
         })
     } 
 }

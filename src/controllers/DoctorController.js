@@ -11,30 +11,30 @@ const handleErrors = (error) => {
     let errors = { name: '', surname_p: '', surname_m: '', email: '', password: '' }
 
     if (error.code === 11000) {
-        errors.email = 'Email already exists'
+        errors.email = 'El email ya existe'
     }
 
     if (error.errors) {
         
         if (error.errors.name) {
-            errors.name = 'You must to have a name'
+            errors.name = 'Tienes que ingresar un nombre'
         }
     
         if (error.errors.surname_p) {
-            errors.surname_p = 'You must to have a fatherLastName'
+            errors.surname_p = 'Tienes que ingresar un apellido paterno'
         }
     
         if (error.errors.surname_m) {
-            errors.surname_m = 'You must to have a motherLastName'
+            errors.surname_m = 'Tienes que ingresar un apellido materno'
         }
     
         if (error.errors.email) {
-            errors.email = 'Wrong email'
+            errors.email = 'Email erroneo'
         }
     }
 
     if (error.message === 'Password is wrong') {
-        errors.password = 'Password is wrong'
+        errors.password = 'La contraseña es incorrecta'
     }
 
     return errors
@@ -71,8 +71,7 @@ DoctorController.insertDoctor = async (req, res) => {
         })
 
         res.json({
-            doctorCreate,
-            specialtyFound
+            message: 'El doctor ha sido registrado correctamente'
         })
     } catch (error) {
 
@@ -109,14 +108,12 @@ DoctorController.deleteDoctors = async (req, res) => {
         })
 
         res.status(201).json({
-            message: 'Doctor deleted',
-            doctorDeleted,
-            specialtyFound
+            message: 'El doctor ha sido eliminado correctamente'
         })
     } catch (error) {
 
         res.status(201).json({
-            message: 'Doctor has not been deleted'
+            message: 'El doctor no ha sido eliminado'
         })
     }
 }
@@ -139,13 +136,15 @@ DoctorController.updateDoctorById = async (req, res) => {
             new: true
         })
 
-        res.status(201).json(doctorUpdated)
+        res.status(201).json({
+            message: 'El doctor ha sido actualizado con exito'
+        })
 
     } catch (error) {
 
         console.log(error)
         res.status(500).json({
-            message: 'There was an error in the user update'
+            message: handleErrors(error)
         })
     }
 }
@@ -170,25 +169,28 @@ DoctorController.login = async (req, res) => {
 
 
                 res.status(200).json({
-                    message: 'token created',
+                    message: 'El token ha sido creado correctamente',
                     token
                 })
 
             } else {
 
                 res.status(200).json({
-                    message: 'token has not been created'
+                    message: 'El token no ha sido creado'
                 })
             }
 
         } catch (error) {
 
+            res.status(200).json({
+                message: handleErrors(error)
+            })
         }
 
     } else {
 
         res.status(404).json({
-            error: 'Email is not registered'
+            error: 'El email no esta registrado'
         })
     }
 }
@@ -231,7 +233,6 @@ DoctorController.listDoctorBySpecialty = async (req, res) => {
     )
 
     res.status(201).json({
-        message: "Specialty found",
         specialtyFound
     })
 }
@@ -252,12 +253,14 @@ DoctorController.changePassword = async (req, res) => {
                 new: true
             })
     
-            res.status(201).json(doctorUpdated)
+            res.status(201).json({
+                message: 'La contraseña ha sido actualizado con exito'
+            })
         }
         else {
     
             res.status(404).json({
-                error: 'Passwords are differents'
+                error: 'Las contraseñas son diferentes'
             })
         }
     } catch (error) {
