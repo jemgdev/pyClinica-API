@@ -55,7 +55,7 @@ medicalHistoryController.insertMedicalHistory = async (req, res) => {
     } catch (error) {
         
         res.status(404).json({
-            message: `There was an error with the insert: ${error.message}`
+            message: `Hubo un error con la inserción del historial médico: ${error.message}`
         })
     }
     
