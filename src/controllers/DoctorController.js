@@ -155,13 +155,15 @@ DoctorController.login = async (req, res) => {
 
     const { email, password } = req.body
 
-    const doctorFound = await Doctor.find({ email })
-
+    const doctorFound = await Doctor.findOne({ email })
+    
     if (doctorFound) {
-        try {
-            if (await Doctor.login(password, doctorFound[0].password)) {
 
-                const token = await jwt.sign({ id: doctorFound[0]._id }, process.env.SECRET_KEY, {
+        try {
+
+            if (await Doctor.login(password, doctorFound.password)) {
+
+                const token = await jwt.sign({ id: doctorFound._id }, process.env.SECRET_KEY, {
 
                     expiresIn: 60 * 60 * 24
 
@@ -169,7 +171,7 @@ DoctorController.login = async (req, res) => {
 
 
                 res.status(200).json({
-                    message: 'El token ha sido creado correctamente',
+                    message: 'El doctor se ha logueado con exito',
                     token
                 })
 
@@ -182,7 +184,7 @@ DoctorController.login = async (req, res) => {
 
         } catch (error) {
 
-            res.status(200).json({
+            res.status(404).json({
                 message: handleErrors(error)
             })
         }
