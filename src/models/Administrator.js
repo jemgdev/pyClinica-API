@@ -19,7 +19,7 @@ const administrator = new Schema(
       default: "https://www.jeas.ruet.ac.bd/images/avatar.png",
     },
     phone: { type: String },
-    dni: { type: String, unique: true },
+    dni: { type: String},
     gender: { type: String },
     age: { type: Number },
   },
