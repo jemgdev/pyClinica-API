@@ -57,14 +57,6 @@ CampusController.deleteCampus = async (req, res) => {
 //actualizar campus por id por parametro y cambios enviado en json
 CampusController.updateCampus = async (req, res) => {
   const idCampus = req.params.campusid;
-  const campusSchema = new Campus({
-    department: req.body.department,
-    province: req.body.province,
-    district: req.body.district,
-    direction: req.body.direction,
-    specialty:req.body.specialty
-  });
-
   try {
     const updateFound = await Campus.findOneAndUpdate({ _id: idCampus }, {$set: req.body},{ 
       new: true 

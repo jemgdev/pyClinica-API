@@ -107,13 +107,6 @@ MedicalappointmentController.deleteMedicalAppointment = async (req, res) => {
 //actualizar cita medica por id por parametro y cambios enviado en json
 MedicalappointmentController.   updateMedicappo = async (req, res) => {
     const medicalappoid = req.params.medicalappoid;
-    const medicalappointmentSchema = new Medicalappointment({
-        patient: req.body.patient,
-        doctor: req.body.doctor,
-        date: req.body.date,
-        description: req.body.description,
-        price: req.body.price,
-    });
     try {
         const updateFound = await Medicalappointment.findOneAndUpdate({ _id: medicalappoid }, { $set: req.body }, { new: true });
         res.json(updateFound);

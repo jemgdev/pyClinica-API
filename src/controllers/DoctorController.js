@@ -61,7 +61,7 @@ DoctorController.insertDoctor = async (req, res) => {
 
         const doctorCreate = await doctorSchema.save();
         
-        const specialtyFound = await Specialty.findByIdAndUpdate(doctorCreate.specialty, {
+        await Specialty.findByIdAndUpdate(doctorCreate.specialty, {
             
             $addToSet:{
                 doctors: doctorCreate._id
@@ -99,7 +99,7 @@ DoctorController.deleteDoctors = async (req, res) => {
 
         const doctorDeleted = await Doctor.findByIdAndDelete(iddoctor)
 
-        const specialtyFound = await Specialty.findByIdAndUpdate(doctorDeleted.specialty, {
+        await Specialty.findByIdAndUpdate(doctorDeleted.specialty, {
             $pull: {
                 doctors: doctorDeleted._id
             }
@@ -124,7 +124,7 @@ DoctorController.updateDoctorById = async (req, res) => {
     const { name, surname_p, surname_m, email, phone, dni, age } = req.body
 
     try {
-        const doctorUpdated = await Doctor.findByIdAndUpdate(req.id, {
+        await Doctor.findByIdAndUpdate(req.id, {
             name,
             surname_p,
             surname_m,
@@ -249,7 +249,7 @@ DoctorController.changePassword = async (req, res) => {
         
         if (await Doctor.login(password, doctorfound.password)) {
 
-            const doctorUpdated = await Doctor.findByIdAndUpdate(req.id, {
+            await Doctor.findByIdAndUpdate(req.id, {
                 password: await Doctor.changePassword(newPassword)
             }, {
                 new: true

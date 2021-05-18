@@ -1,6 +1,5 @@
 const Specialty = require("../models/Specialty");
 const Campus = require("../models/Campus");
-const { Mongoose } = require('mongoose')
 const mongoose = require('mongoose')
 
 const SpecialtyController = {};
@@ -70,7 +69,7 @@ SpecialtyController.insertSpecialty = async (req, res) => {
   try {
     const especialityCreate = await especialitySchema.save();
 
-    const campusUpdated = await Campus.findByIdAndUpdate(campus,
+    await Campus.findByIdAndUpdate(campus,
       {
         $addToSet: {
           specialty: especialityCreate._id,
@@ -97,7 +96,7 @@ SpecialtyController.deleteSpecialty = async (req, res) => {
   const idSpecialty = req.params.specialtyid;
   try {
     const deleteFound = await Specialty.findByIdAndDelete({ _id: idSpecialty });
-    const campusUpdated = await Campus.findByIdAndUpdate(deleteFound.campus, {
+    await Campus.findByIdAndUpdate(deleteFound.campus, {
       $pull: {
           specialty: deleteFound._id
       }
@@ -124,7 +123,7 @@ SpecialtyController.deleteSpecialty = async (req, res) => {
 // actualizar especialidad
 SpecialtyController.updateSpecialty = async (req, res) => {
   const idSpecialty = req.params.specialtyid;
-  const specialtySchema = new Specialty({
+  new Specialty({
     name: req.body.name,
     price: req.body.price,
     doctors: req.body.doctors,

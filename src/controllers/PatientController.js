@@ -56,7 +56,7 @@ patientController.register = async (req, res) => {
 
         try {
 
-            const patientSaved = await newPatient.save()
+            await newPatient.save()
 
             res.status(201).json({
                 message: 'El paciente ha sido registrado correctamente'
@@ -131,7 +131,7 @@ patientController.changePersonalInformation = async (req, res) => {
 
     try {
 
-        const patientUpdated = await Patient.findByIdAndUpdate(req.id, {
+        await Patient.findByIdAndUpdate(req.id, {
 
             name,
             fatherLastName,
@@ -173,7 +173,7 @@ patientController.changePassword = async (req, res) => {
         
         if (await Patient.login(password, patientFound.password)) {
 
-            const patientUpdated = await Patient.findByIdAndUpdate(req.id, {
+            await Patient.findByIdAndUpdate(req.id, {
                 password: await Patient.changePassword(newPassword)
             }, {
                 new: true

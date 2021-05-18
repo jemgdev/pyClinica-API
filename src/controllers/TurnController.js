@@ -1,4 +1,3 @@
-const { request } = require("express");
 const Doctor = require("../models/Doctor");
 const Turn = require("../models/Turn");
 const mongoose = require("mongoose");
@@ -23,7 +22,7 @@ TurnController.insertTurn = async (req, res) => {
   });
   try {
     const turnCreate = await turnSchema.save();
-    const doctorUpdated = await Doctor.findByIdAndUpdate(
+    await Doctor.findByIdAndUpdate(
       idDoctor,
       {
         $addToSet: {
@@ -78,12 +77,6 @@ TurnController.deleteTurn = async (req, res) => {
 // actualizar turno
 TurnController.updateTurn = async (req, res) => {
   const idTurn = req.params.turnid;
-  const turnSchema = new Turn({
-    type: req.body.type,
-    start_time: req.body.start_time,
-    end_time: req.body.end_time,
-    schedules: req.body.schedules,
-  });
 
   try {
     const updateFound = await Turn.findOneAndUpdate(

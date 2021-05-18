@@ -1,6 +1,4 @@
 const Prescription = require('../models/Prescription')
-const Patient = require('../models/Patient')
-const Doctor = require('../models/Doctor')
 const History =require('../models/MedicalHistory')
 const mongoose = require('mongoose')
 
@@ -17,7 +15,7 @@ PrescriptionController.insertPrescription = async (req, res) => {
     })
 
     try {
-        const prescriptionSaved = await newPrescription.save()
+        await newPrescription.save()
         res.status(201).json({
             message: 'La receta medica ha sido creada con exito'
         })
@@ -34,7 +32,7 @@ PrescriptionController.updatePrescription = async (req, res) => {
     const {idprescription} = req.params
 
     try{
-        const prescriptionUpdated = await Prescription.findByIdAndUpdate(idprescription, {
+        await Prescription.findByIdAndUpdate(idprescription, {
             detail
         },{
             new: true
@@ -80,7 +78,9 @@ PrescriptionController.listPrescriptionByIdHistory = async (req, res) => {
     )
 
     res.status(201).json({
-        prescriptionFound:{_id: prescriptionFound[0]._id[0], detail: prescriptionFound[0].detail[0], date: prescriptionFound[0].date[0]}
+        _id: prescriptionFound[0]._id[0], 
+        detail: prescriptionFound[0].detail[0], 
+        date: prescriptionFound[0].date[0]
     })
 }
 
