@@ -31,11 +31,13 @@ ScheduleController.insertSchedule = async (req, res) => {
       }
     );
    //res.json(ScheduleCreate);
-    res.status(201).json({
-      message: "Horario registrado correctamente",
-    });
+   res.status(201).json({
+    message: "El horario fue registrado exitosamente",
+  });
   } catch (error) {
-    console.log(error);
+    res.status(404).json({
+      message: `Ocurrió un error al registrar el horario: ${error.message}`,
+    });
   }
 };
 
@@ -52,31 +54,14 @@ ScheduleController.deleteSchedule = async (req, res) => {
       new: true
   })
     //res.json(deleteFound);
-    res.status(201).json({
-      message: "Horario eliminado correctamente",
-    });
+      res.status(201).json({
+        message: "El horario fue eliminado exitosamente",
+      });
   } catch (error) {
-    console.log(error);
+    res.status(404).json({
+      message: `Ocurrió un error al eliminar el horario: ${error.message}`,
+    });
   }
 };
-
-/*Actualizando Horario
-ScheduleController.updateSchedule = async (req, res) => {
-  const idSchedule = req.params.schedule-id;
-  const scheduleSchema = new Schedule({
-    scheduletime: req.body.scheduletime,
-    availability: req.body.availability,
-  });
-  try {
-    const updateFound = await Schedule.findByIdAndUpdate(
-       idSchedule,
-      { $set: req.body },
-      { new: true }
-    );
-    res.json(updateFound);
-  } catch (error) {
-    console.log(error);
-  }
-};*/
 
 module.exports = ScheduleController;

@@ -6,7 +6,7 @@ const TurnController = {};
 
 // listar turnos
 TurnController.listTurn = async (req, res) => {
-  const turnFound = await Turn.find();
+  const turnFound = await Turn.find().select({"createAt":0 , "updatedAt":0});
   res.json(turnFound);
 };
 
@@ -36,10 +36,12 @@ TurnController.insertTurn = async (req, res) => {
     );
     //res.json({ turnCreate, doctorUpdated });
     res.status(201).json({
-      message: "Turno registrado correctamente",
+      message: "El turno fue registrado exitosamente",
     });
   } catch (error) {
-    console.log(error);
+    res.status(404).json({
+      message: `Ocurrió un error al insertar el turno: ${error.message}`,
+    });
   }
 };
 
@@ -57,11 +59,19 @@ TurnController.deleteTurn = async (req, res) => {
     );
     const deleteFound = await Turn.findByIdAndDelete(idTurn);
     //res.json(deleteFound);
-    res.status(201).json({
-      message: "Turno eliminado correctamente",
-    });
+    if(deleteFound==null){
+      res.status(201).json({
+        message: "El turno no existe",
+      });
+    }else{
+      res.status(201).json({
+        message: "El turno fue eliminado exitosamente",
+      });
+    }
   } catch (error) {
-    console.log(error);
+    res.status(404).json({
+      message: `Ocurrió un error al eliminar el turno: ${error.message}`,
+    });
   }
 };
 
@@ -82,12 +92,19 @@ TurnController.updateTurn = async (req, res) => {
       { new: true }
     );
     // res.json();
-    res.status(201).json({
-      message: "Turno actualizado correctamente",
-      //updateFound
-    });
+    if(updateFound==null){
+      res.status(201).json({
+        message: "El turno no existe",
+      });
+    }else{
+      res.status(201).json({
+        message: "El turno fue actualizado exitosamente",
+      });
+    }
   } catch (error) {
-    console.log(error);
+    res.status(404).json({
+      message: `Ocurrió un error al actualizar el turno: ${error.message}`,
+    });
   }
 };
 
@@ -95,8 +112,14 @@ TurnController.updateTurn = async (req, res) => {
 TurnController.ListOnlySchedules = async (req, res) => {
   const idTurn = req.params.turnid;
   const listSchedule = await Turn.findById(idTurn).populate("schedules");
-
-  res.json(listSchedule);
+ 
+  if(listSchedule==null){
+    res.status(201).json({
+      message: "El turno no existe",
+    });
+  }else{
+    res.json(listSchedule);
+  }
 };
 
 // Listar horarios por Doctor
@@ -134,17 +157,25 @@ TurnController.listSchedulesIdDoctor = async (req, res) => {
     {
       $project: {
         _id: "$schedules._id",
-        doctor: "$name",
+        doctornames: "$name",
+        doctorsurname_p:"$surname_p",
+        doctorsurname_m:"$surname_m",
         turn: "$turn.type",
         schedule: "$schedules.scheduletime",
       },
     },
   ]);
 
-  res.status(201).json({
-    message: "Horarios del doctor encontrados correctamente",
-    doctorFound,
-  });
+
+  if(doctorFound.length==0){
+    res.status(201).json({
+      message: "El doctor no existe o no cuenta con horarios",
+    });
+  }else{
+    res.status(201).json({
+      doctorFound,
+    });
+  }
 };
 
 module.exports = TurnController;

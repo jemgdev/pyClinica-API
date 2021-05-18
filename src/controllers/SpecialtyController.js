@@ -44,11 +44,16 @@ SpecialtyController.listSpecialtyByCampus = async (req, res) => {
           }
       ]
   )
-
-  res.status(201).json({
-      message: "Especialidades encontradas correctamente",
-      campusFound
-  })
+ 
+  if(campusFound.length==0){
+    res.status(201).json({
+      message: "The campus does not exist or doesn't have specialties",
+    });
+  }else{
+    res.status(201).json({
+      campusFound,
+    });
+  }
 
 }
 
@@ -78,10 +83,12 @@ SpecialtyController.insertSpecialty = async (req, res) => {
 
     //res.json(especialityCreate);
     res.status(201).json({
-      message: "Especialidad registrada correctamente",
+      message: "La especialidad fue registrada exitosamente",
     });
   } catch (error) {
-    console.log(error);
+    res.status(404).json({
+      message: `Ocurrió un error al registrar la especialidad: ${error.message}`,
+    });
   }
 };
 
@@ -98,11 +105,19 @@ SpecialtyController.deleteSpecialty = async (req, res) => {
       new: true
   })
     //res.json(deleteFound);
-    res.status(201).json({
-      message: "Especialidad eliminada correctamente",
-    });
+    if(deleteFound==null){
+      res.status(201).json({
+        message: "La especialidad no existe",
+      });
+    }else{
+      res.status(201).json({
+        message: "La especialidad fue eliminada exitosamente",
+      });
+    }
   } catch (error) {
-    console.log(error);
+    res.status(404).json({
+      message: `Ocurrió un error al eliminar la especialidad`,
+    });
   }
 };
 
@@ -122,19 +137,20 @@ SpecialtyController.updateSpecialty = async (req, res) => {
       { new: true }
     );
     //res.json(updateFound);
-    res.status(201).json({
-      message: "Especialidad actualizada correctamente",
-    });
+    if(updateFound==null){
+      res.status(201).json({
+        message: "La especialidad no existe",
+      });
+    }else{
+      res.status(201).json({
+        message: "La especialidad fue actualizada exitosamente",
+      });
+    }
   } catch (error) {
-    console.log(error);
+    res.status(404).json({
+      message: `Ocurrió un error al actualizar la especialidad: ${error.message}`,
+    });
   }
 };
-
-/* Listar doctores de una especialidad
-SpecialtyController.ListOnlyDoctors = async (req, res) => {
-  const idSpecialty = req.params.specialty-id;
-  const listDoctor = await Specialty.findById(idSpecialty).populate("doctors");
-  res.json(listDoctor);
-};*/
 
 module.exports = SpecialtyController;
