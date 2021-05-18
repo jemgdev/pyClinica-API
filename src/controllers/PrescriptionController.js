@@ -51,7 +51,7 @@ PrescriptionController.updatePrescription = async (req, res) => {
 //Listado de Citas por Historial
 PrescriptionController.listPrescriptionByIdHistory = async (req, res) => {
     const {idhistory} = req.params
-    console.log(idhistory)
+
     const prescriptionFound = await History.aggregate(
         [
             {
@@ -78,9 +78,9 @@ PrescriptionController.listPrescriptionByIdHistory = async (req, res) => {
     )
 
     res.status(201).json({
-        _id: prescriptionFound[0]._id[0], 
-        detail: prescriptionFound[0].detail[0], 
-        date: prescriptionFound[0].date[0]
+       _id: prescriptionFound[0]._id[0], 
+       detail: prescriptionFound[0].detail[0], 
+       date: prescriptionFound[0].date[0]
     })
 }
 
