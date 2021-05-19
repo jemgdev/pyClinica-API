@@ -46,7 +46,7 @@ SpecialtyController.listSpecialtyByCampus = async (req, res) => {
  
   if(campusFound.length==0){
     res.status(201).json({
-      message: "The campus does not exist or doesn't have specialties",
+      message: "El campus no existe o no cuenta con especialidades",
     });
   }else{
     res.status(201).json({
@@ -104,6 +104,7 @@ SpecialtyController.deleteSpecialty = async (req, res) => {
       new: true
   })
     //res.json(deleteFound);
+    
     if(deleteFound==null){
       res.status(201).json({
         message: "La especialidad no existe",
