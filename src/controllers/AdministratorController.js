@@ -47,12 +47,12 @@ AdministratorController.loginAdministrator = async (req, res) => {
         );
 
         res.status(200).json({
-          status: true,
+          auth: true,
           token,
         });
       } else {
         res.status(200).json({
-          status: false,
+          auth: false,
         });
       }
     } catch (error) {
