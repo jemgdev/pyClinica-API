@@ -8,7 +8,7 @@ const handleErrors = (error) => {
 
     console.log(error.message, error.code)
 
-    let errors = { name: '', surname_p: '', surname_m: '', email: '', password: '' }
+    let errors = { name: '', fatherLastName: '', motherLastName: '', email: '', password: '' }
 
     if (error.code === 11000) {
         errors.email = 'El email ya existe'
@@ -21,11 +21,11 @@ const handleErrors = (error) => {
         }
     
         if (error.errors.surname_p) {
-            errors.surname_p = 'Tienes que ingresar un apellido paterno'
+            errors.fatherLastName = 'Tienes que ingresar un apellido paterno'
         }
     
         if (error.errors.surname_m) {
-            errors.surname_m = 'Tienes que ingresar un apellido materno'
+            errors.motherLastName = 'Tienes que ingresar un apellido materno'
         }
     
         if (error.errors.email) {
