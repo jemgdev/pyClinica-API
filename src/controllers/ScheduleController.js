@@ -35,7 +35,7 @@ ScheduleController.insertSchedule = async (req, res) => {
     message: "El horario fue registrado exitosamente",
   });
   } catch (error) {
-    res.status(404).json({
+    res.status(200).json({
       message: `Ocurrió un error al registrar el horario: ${error.message}`,
     });
   }
@@ -58,7 +58,7 @@ ScheduleController.deleteSchedule = async (req, res) => {
         message: "El horario fue eliminado exitosamente",
       });
   } catch (error) {
-    res.status(404).json({
+    res.status(200).json({
       message: `Ocurrió un error al eliminar el horario: ${error.message}`,
     });
   }

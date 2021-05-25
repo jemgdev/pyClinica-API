@@ -63,7 +63,7 @@ patientController.register = async (req, res) => {
             })            
         } catch (error) {    
             
-            res.status(401).json({
+            res.status(200).json({
                 error: handleErrors(error)
             })
         }
@@ -71,7 +71,7 @@ patientController.register = async (req, res) => {
     } 
     else {
         
-        res.status(401).json({
+        res.status(200).json({
             error: 'Las contraseñas son diferentes'
         })
     }
@@ -108,7 +108,7 @@ patientController.login = async (req, res) => {
             
         } catch (error) {
             
-            res.status(404).json({
+            res.status(200).json({
 
                 auth: false,
                 error: handleErrors(error)            
@@ -117,7 +117,7 @@ patientController.login = async (req, res) => {
     }
     else {
 
-        res.status(404).json({
+        res.status(200).json({
             auth: false,
             message: 'El email no esta registrado' 
         })
@@ -157,7 +157,7 @@ patientController.changePersonalInformation = async (req, res) => {
         
     } catch (error) {
 
-        res.status(500).json({
+        res.status(200).json({
             error: handleErrors(error)
         })
     }
@@ -185,13 +185,13 @@ patientController.changePassword = async (req, res) => {
         }
         else {
     
-            res.status(404).json({
+            res.status(200).json({
                 error: 'Las contraseñas son diferentes'
             })
         }
     } catch (error) {
         
-        res.status(404).json({
+        res.status(200).json({
             error: handleErrors(error)
         })
     }

@@ -21,7 +21,7 @@ PrescriptionController.insertPrescription = async (req, res) => {
             message: 'La receta medica ha sido creada con exito'
         })
     } catch (error) {
-        res.status(401).json({
+        res.status(200).json({
             message: 'La receta medica no ha sido creada'
         })
     }

@@ -145,12 +145,12 @@ AdministratorController.changePassword = async (req, res) => {
 
       res.status(201).json({ message: "Contraseña actualizada correctamente" });
     } else {
-      res.status(404).json({
+      res.status(200).json({
         error: "Las contraseñas son diferentes",
       });
     }
   } catch (error) {
-    res.status(404).json({ error: "Contraseña incorrecta" });
+    res.status(200).json({ error: "Contraseña incorrecta" });
   }
 };
 

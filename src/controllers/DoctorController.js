@@ -75,7 +75,7 @@ DoctorController.insertDoctor = async (req, res) => {
         })
     } catch (error) {
 
-        res.status(401).json({
+        res.status(200).json({
             error: handleErrors(error)
         })
     }
@@ -86,7 +86,7 @@ DoctorController.listDoctors = async (req, res) => {
 
     const listDoctors = await Doctor.find()
 
-    res.status(201).json({
+    res.status(200).json({
         listDoctors
     })
 }
@@ -112,7 +112,7 @@ DoctorController.deleteDoctors = async (req, res) => {
         })
     } catch (error) {
 
-        res.status(201).json({
+        res.status(200).json({
             message: 'El doctor no ha sido eliminado'
         })
     }
@@ -143,7 +143,7 @@ DoctorController.updateDoctorById = async (req, res) => {
     } catch (error) {
 
         console.log(error)
-        res.status(500).json({
+        res.status(200).json({
             message: handleErrors(error)
         })
     }
@@ -168,7 +168,6 @@ DoctorController.login = async (req, res) => {
 
                 })
 
-
                 res.status(200).json({
                     auth: true,
                     token
@@ -184,7 +183,7 @@ DoctorController.login = async (req, res) => {
 
         } catch (error) {
 
-            res.status(201).json({
+            res.status(200).json({
                 auth: false,
                 error: handleErrors(error)
             })
@@ -192,7 +191,7 @@ DoctorController.login = async (req, res) => {
 
     } else {
 
-        res.status(201).json({
+        res.status(200).json({
             auth: false,
             message: 'El email no esta registrado'
         })
@@ -236,7 +235,7 @@ DoctorController.listDoctorBySpecialty = async (req, res) => {
         ]
     )
 
-    res.status(201).json({
+    res.status(200).json({
         specialtyFound
     })
 }
@@ -257,19 +256,19 @@ DoctorController.changePassword = async (req, res) => {
                 new: true
             })
     
-            res.status(201).json({
+            res.status(200).json({
                 message: 'La contraseña ha sido actualizado con exito'
             })
         }
         else {
     
-            res.status(404).json({
+            res.status(200).json({
                 error: 'Las contraseñas son diferentes'
             })
         }
     } catch (error) {
         
-        res.status(404).json({
+        res.status(200).json({
             error: handleErrors(error)
         })
     }

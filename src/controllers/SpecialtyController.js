@@ -85,7 +85,7 @@ SpecialtyController.insertSpecialty = async (req, res) => {
       message: "La especialidad fue registrada exitosamente",
     });
   } catch (error) {
-    res.status(404).json({
+    res.status(200).json({
       message: `Ocurrió un error al registrar la especialidad: ${error.message}`,
     });
   }
@@ -115,7 +115,7 @@ SpecialtyController.deleteSpecialty = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(404).json({
+    res.status(200).json({
       message: `Ocurrió un error al eliminar la especialidad`,
     });
   }
@@ -147,7 +147,7 @@ SpecialtyController.updateSpecialty = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(404).json({
+    res.status(200).json({
       message: `Ocurrió un error al actualizar la especialidad: ${error.message}`,
     });
   }

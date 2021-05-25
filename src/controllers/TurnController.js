@@ -38,7 +38,7 @@ TurnController.insertTurn = async (req, res) => {
       message: "El turno fue registrado exitosamente",
     });
   } catch (error) {
-    res.status(404).json({
+    res.status(200).json({
       message: `Ocurrió un error al insertar el turno: ${error.message}`,
     });
   }
@@ -68,7 +68,7 @@ TurnController.deleteTurn = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(404).json({
+    res.status(200).json({
       message: `Ocurrió un error al eliminar el turno: ${error.message}`,
     });
   }
@@ -95,7 +95,7 @@ TurnController.updateTurn = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(404).json({
+    res.status(200).json({
       message: `Ocurrió un error al actualizar el turno: ${error.message}`,
     });
   }

@@ -100,7 +100,7 @@ MedicalappointmentController.deleteMedicalAppointment = async (req, res) => {
             message: 'Cita medica eliminado',
         })
     } catch (error) {
-        res.status(201).json({
+        res.status(200).json({
             message: 'Cita medica no ha sido eliminado',
         })
     }

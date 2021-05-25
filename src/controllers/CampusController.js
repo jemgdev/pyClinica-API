@@ -25,7 +25,7 @@ CampusController.insertCampus = async (req, res) => {
       message: "El campus se registró exitosamente",
     });
   } catch (error) {
-    res.status(404).json({
+    res.status(200).json({
       message: `Ocurrió un error al insertar un campus: ${error.message}`,
     });
   }
@@ -48,7 +48,7 @@ CampusController.deleteCampus = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(404).json({
+    res.status(200).json({
       message: `Ocurrió un error al eliminar el campus: ${error.message}`,
     });
   }
@@ -72,7 +72,7 @@ CampusController.updateCampus = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(404).json({
+    res.status(200).json({
       message: `Ocurrió un error al actualizar el campus: ${error.message}`,
     });
   }
