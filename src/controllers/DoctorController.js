@@ -149,7 +149,6 @@ DoctorController.updateDoctorById = async (req, res) => {
     }
 }
 
-
 //Logueo del Doctor
 DoctorController.login = async (req, res) => {
 
@@ -185,7 +184,7 @@ DoctorController.login = async (req, res) => {
 
         } catch (error) {
 
-            res.status(404).json({
+            res.status(201).json({
                 auth: false,
                 error: handleErrors(error)
             })
@@ -193,7 +192,7 @@ DoctorController.login = async (req, res) => {
 
     } else {
 
-        res.status(404).json({
+        res.status(201).json({
             auth: false,
             message: 'El email no esta registrado'
         })
