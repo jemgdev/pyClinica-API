@@ -15,8 +15,9 @@ PrescriptionController.insertPrescription = async (req, res) => {
     })
 
     try {
-        await newPrescription.save()
+        const prescriptionSaved = await newPrescription.save()
         res.status(201).json({
+            idPrescription: prescriptionSaved._id,
             message: 'La receta medica ha sido creada con exito'
         })
     } catch (error) {
