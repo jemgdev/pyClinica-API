@@ -149,9 +149,10 @@ MedicalappointmentController.listMedicAppoIdDoctor = async (req, res) => {
             },
             {
                 $project: {
-                    patient: '$patient.name',
-                    patient_p: '$patient.fatherLastName',
-                    patient_m: '$patient.motherLastName',
+                    name: '$patient.name',
+                    fatherLastName: '$patient.fatherLastName',
+                    motherLastName: '$patient.motherLastName',
+                    avatar: '$patient.avatar',
                     _id: "$medicalAppointment._id",
                     date: '$medicalAppointment.date'
                 }
@@ -159,10 +160,7 @@ MedicalappointmentController.listMedicAppoIdDoctor = async (req, res) => {
         ]
     )
 
-    res.status(201).json({
-        message: 'Doctor found',
-        doctorFound
-    })
+    res.status(201).json(doctorFound)
 }
 
 //Listado de Citas medicas por Paciente
@@ -200,8 +198,9 @@ MedicalappointmentController.listMedicAppoByIdPatient = async (req, res) => {
             {
                 $project: {
                     doctor: '$doctor.name',
-                    doctor_p: '$doctor.surname_p',
-                    doctor_m: '$doctor.surname_m',
+                    fatherLastName: '$doctor.surname_p',
+                    motherLastName: '$doctor.surname_m',
+                    avatar: '$doctor.avatar',
                     _id: "$medicalAppointments._id",
                     date: '$medicalAppointments.date'
                 }
@@ -209,10 +208,7 @@ MedicalappointmentController.listMedicAppoByIdPatient = async (req, res) => {
         ]
     )
 
-    res.status(201).json({
-        message: 'Patient found',
-        patientFound
-    })
+    res.status(201).json(patientFound)
 }
 
 module.exports = MedicalappointmentController;

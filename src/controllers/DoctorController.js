@@ -171,13 +171,14 @@ DoctorController.login = async (req, res) => {
 
 
                 res.status(200).json({
-                    message: 'El doctor se ha logueado con exito',
+                    auth: true,
                     token
                 })
 
             } else {
 
                 res.status(200).json({
+                    auth: false,
                     message: 'El token no ha sido creado'
                 })
             }
@@ -185,14 +186,16 @@ DoctorController.login = async (req, res) => {
         } catch (error) {
 
             res.status(404).json({
-                message: handleErrors(error)
+                auth: false,
+                error: handleErrors(error)
             })
         }
 
     } else {
 
         res.status(404).json({
-            error: 'El email no esta registrado'
+            auth: false,
+            message: 'El email no esta registrado'
         })
     }
 }

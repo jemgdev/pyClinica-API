@@ -119,7 +119,7 @@ patientController.login = async (req, res) => {
 
         res.status(404).json({
             auth: false,
-            error: 'El email no esta registrado' 
+            message: 'El email no esta registrado' 
         })
 
     }

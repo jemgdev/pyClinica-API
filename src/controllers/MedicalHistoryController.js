@@ -47,7 +47,7 @@ medicalHistoryController.insertMedicalHistory = async (req, res) => {
         )
 
         await Schedule.findByIdAndUpdate(medicalAppointmentDeleted.schedule, {
-            availability:true,
+            availability: true,
         })
 
         res.status(201).json(promises[2])
@@ -94,9 +94,10 @@ medicalHistoryController.listByPatientId = async (req, res) => {
             },
             {
                 $project: {
-                    doctor: '$doctor.name',
-                    doctor_p: '$doctor.surname_p',
-                    doctor_m: '$doctor.surname_m',
+                    name: '$doctor.name',
+                    fatherLastName: '$doctor.surname_p',
+                    motherLastName: '$doctor.surname_m',
+                    avatar: '$doctor.avatar',
                     _id: "$medicalHistories._id",
                     date: '$medicalHistories.date'
                 }
@@ -140,9 +141,10 @@ medicalHistoryController.listByDoctortId = async (req, res) => {
             },
             {
                 $project: {
-                    patient: '$patient.name',
-                    patient_p: '$patient.fatherLastName',
-                    patient_m: '$patient.motherLastName',
+                    name: '$patient.name',
+                    fatherLastName: '$patient.fatherLastName',
+                    motherLastName: '$patient.motherLastName',
+                    avatar: '$patient.avatar',
                     _id: "$medicalHistories._id",
                     date: '$medicalHistories.date'
                 }
