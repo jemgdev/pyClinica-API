@@ -18,7 +18,7 @@ MedicalappointmentController.insertMedicAppo = async (req, res) => {
     const  idSchedule  = req.params.idschedule
     const { doctor, description, price, status } = req.body;
     const medicalappointmentSchema = new Medicalappointment({
-        
+
         patient: req.id,
         doctor,
         description,
@@ -42,7 +42,7 @@ MedicalappointmentController.insertMedicAppo = async (req, res) => {
                     new: true,
                 }
             ),
-            await Patient.findByIdAndUpdate(patient,
+            await Patient.findByIdAndUpdate(req.id,
                 {
                     $addToSet: {
                         medicalAppointments: medicalCreate._id,
