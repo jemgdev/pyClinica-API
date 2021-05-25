@@ -6,10 +6,10 @@ const PrescriptionController = {}
 
 //Insertar Recetas Medicas
 PrescriptionController.insertPrescription = async (req, res) => {
-    const { doctor, patient, detail } = req.body
+    const { patient, detail } = req.body
 
     const newPrescription = new Prescription({
-        doctor,
+        doctor: req.id,
         patient,
         detail
     })
