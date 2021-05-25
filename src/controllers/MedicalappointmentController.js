@@ -14,55 +14,56 @@ MedicalappointmentController.listMedicalAppo = async (req, res) => {
 
 //Insertar cita medica
 MedicalappointmentController.insertMedicAppo = async (req, res) => {
+
     const  idSchedule  = req.params.idschedule
-    const { patient, doctor, date, description, price } = req.body;
+    const { doctor, description, price, status } = req.body;
     const medicalappointmentSchema = new Medicalappointment({
-        patient,
+        
+        patient: req.id,
         doctor,
-        date,
         description,
         price,
+        status,
         schedule: idSchedule
-    });
+    })
+
     try {
-        const medicalCreate = await medicalappointmentSchema.save();
+        const medicalCreate = await medicalappointmentSchema.save()
 
-        const doctorUpdated = await Doctor.findByIdAndUpdate(doctor,
-            {
-                $addToSet: {
-                    medicalAppointment: medicalCreate._id,
-
+        await Promise.all([
+            await Doctor.findByIdAndUpdate(doctor,
+                {
+                    $addToSet: {
+                        medicalAppointment: medicalCreate._id,
+    
+                    },
                 },
-            },
-            {
-                new: true,
-            }
-        );
-        const patientUpdated = await Patient.findByIdAndUpdate(patient,
-            {
-                $addToSet: {
-                    medicalAppointments: medicalCreate._id,
+                {
+                    new: true,
+                }
+            ),
+            await Patient.findByIdAndUpdate(patient,
+                {
+                    $addToSet: {
+                        medicalAppointments: medicalCreate._id,
+                    },
                 },
-            },
-            {
-                new: true,
-            }
-        );
-        const scheduleUpdated = await Schedule.findByIdAndUpdate(idSchedule,
-            {
-                availability: false
-            },
-            {
-                new: true,
-            }
-        );
-
+                {
+                    new: true,
+                }
+            ),
+            await Schedule.findByIdAndUpdate(idSchedule,
+                {
+                    availability: false
+                },
+                {
+                    new: true,
+                }
+            )
+        ])
         res.json({
-            medicalCreate,
-            doctorUpdated,
-            patientUpdated,
-            scheduleUpdated
-        });
+            message: 'Cita medica creado correctamente',
+        })
 
     } catch (error) {
         console.log(error);
@@ -71,35 +72,36 @@ MedicalappointmentController.insertMedicAppo = async (req, res) => {
 
 //eliminar cita medica
 MedicalappointmentController.deleteMedicalAppointment = async (req, res) => {
+
     const { medicalappoid } = req.params
 
     try {
         const MedicalappointmentFound = await Medicalappointment.findByIdAndDelete(medicalappoid)
 
-        const doctorUpdated = await Doctor.findByIdAndUpdate(MedicalappointmentFound.doctor, {
-            $pull: {
-                medicalAppointment: MedicalappointmentFound._id
-            }
-        }, {
-            new: true
-        })
-        const patientUpdated = await Patient.findByIdAndUpdate(MedicalappointmentFound.patient, {
-            $pull: {
-                medicalAppointments: MedicalappointmentFound._id
-            }
-        }, {
-            new: true
-        })
+        await Promise.all([
+            await Doctor.findByIdAndUpdate(MedicalappointmentFound.doctor, {
+                $pull: {
+                    medicalAppointment: MedicalappointmentFound._id
+                }
+            }, {
+                new: true
+            }),
+            await Patient.findByIdAndUpdate(MedicalappointmentFound.patient, {
+                $pull: {
+                    medicalAppointments: MedicalappointmentFound._id
+                }
+            }, {
+                new: true
+            })
+        ])
+        
 
         res.status(201).json({
-            message: 'Medical Appointment has been deleted',
-            MedicalappointmentFound,
-            doctorUpdated,
-            patientUpdated
+            message: 'Cita medica eliminado',
         })
     } catch (error) {
         res.status(201).json({
-            error: 'Medical Appointment has not been deleted',
+            message: 'Cita medica no ha sido eliminado',
         })
     }
 };
