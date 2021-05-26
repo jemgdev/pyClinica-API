@@ -186,13 +186,36 @@ patientController.changePassword = async (req, res) => {
         else {
     
             res.status(200).json({
-                error: 'Las contraseñas son diferentes'
+                message: 'Las contraseñas son diferentes'
             })
         }
     } catch (error) {
         
         res.status(200).json({
             error: handleErrors(error)
+        })
+    }
+}
+
+patientController.changeAvatar = async (req, res) => {
+
+    const { avatar } = req.body
+
+    try {
+
+        await Patient.findByIdAndUpdate(req.id, {
+            avatar
+        }, {
+            new: true
+        })
+    
+        res.status(201).json({
+            message: 'Avatar ha sido actualizado correctamente'
+        })
+    } catch (error) {
+        
+        res.status(201).json({
+            message: 'Hubo un error al actualizar el avatar'
         })
     }
 }

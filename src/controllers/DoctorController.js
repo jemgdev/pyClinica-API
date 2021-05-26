@@ -274,6 +274,31 @@ DoctorController.changePassword = async (req, res) => {
     }
 }
 
+DoctorController.changeAvatar = async (req, res) => {
+
+    const { avatar } = req.body
+
+    try {
+        
+        await Doctor.findByIdAndUpdate(req.id, {
+            avatar
+        }, {
+            new: true
+        })
+    
+        res.status(201).json({
+            message: 'El avatar ha diso cambiado correctamente'
+        })
+    } catch (error) {
+
+        res.status(201).json({
+            message: 'Hubo un error al actualizar el avatar'
+        })
+    }
+
+    
+}
+
 DoctorController.getDoctorById = async (req, res) => {
 
     const doctorId = req.id
