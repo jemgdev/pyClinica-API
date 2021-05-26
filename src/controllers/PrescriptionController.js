@@ -1,6 +1,4 @@
 const Prescription = require('../models/Prescription')
-const Patient = require('../models/Patient')
-const Doctor = require('../models/Doctor')
 const History =require('../models/MedicalHistory')
 const mongoose = require('mongoose')
 
@@ -8,10 +6,10 @@ const PrescriptionController = {}
 
 //Insertar Recetas Medicas
 PrescriptionController.insertPrescription = async (req, res) => {
-    const { doctor, patient, detail } = req.body
+    const { patient, detail } = req.body
 
     const newPrescription = new Prescription({
-        doctor,
+        doctor: req.id,
         patient,
         detail
     })
@@ -19,12 +17,12 @@ PrescriptionController.insertPrescription = async (req, res) => {
     try {
         const prescriptionSaved = await newPrescription.save()
         res.status(201).json({
-            message: 'Prescription saved',
-            prescriptionSaved
+            idPrescription: prescriptionSaved._id,
+            message: 'La receta medica ha sido creada con exito'
         })
     } catch (error) {
-        res.status(401).json({
-            message: 'Unsaved prescription'
+        res.status(200).json({
+            message: 'La receta medica no ha sido creada'
         })
     }
 }
@@ -35,19 +33,18 @@ PrescriptionController.updatePrescription = async (req, res) => {
     const {idprescription} = req.params
 
     try{
-        const prescriptionUpdated = await Prescription.findByIdAndUpdate(idprescription, {
+        await Prescription.findByIdAndUpdate(idprescription, {
             detail
         },{
             new: true
         })
         
         res.status(201).json({
-            message: 'Prescription has been updated',
-            prescriptionUpdated
+            message: 'La receta medica ha sido actualizada con exito'
         })
     }catch(error){
         res.status(201).json({
-            error: 'Prescription has not been updated'
+            error: 'La receta medica no ha sido actualizada'
         })
     } 
 }
@@ -55,7 +52,7 @@ PrescriptionController.updatePrescription = async (req, res) => {
 //Listado de Citas por Historial
 PrescriptionController.listPrescriptionByIdHistory = async (req, res) => {
     const {idhistory} = req.params
-    console.log(idhistory)
+
     const prescriptionFound = await History.aggregate(
         [
             {
@@ -82,8 +79,9 @@ PrescriptionController.listPrescriptionByIdHistory = async (req, res) => {
     )
 
     res.status(201).json({
-        message: 'Prescription found',
-        prescriptionFound:{_id: prescriptionFound[0]._id[0], detail: prescriptionFound[0].detail[0], date: prescriptionFound[0].date[0]}
+       _id: prescriptionFound[0]._id[0], 
+       detail: prescriptionFound[0].detail[0], 
+       date: prescriptionFound[0].date[0]
     })
 }
 

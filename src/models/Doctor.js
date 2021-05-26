@@ -3,9 +3,18 @@ const { isEmail } = require('validator')
 const bcrypt = require('bcrypt')
 
 const doctorSchema = new Schema({
-    name: { type: String, require: true },
-    surname_p: { type: String, require: true},
-    surname_m: { type: String, require: true},
+    name: { 
+        type: String, 
+        required: true 
+    },
+    surname_p: { 
+        type: String, 
+        required: true
+    },
+    surname_m: { 
+        type: String, 
+        required: true
+    },
     email: {
         type: String,
         require: true,
@@ -48,11 +57,10 @@ const doctorSchema = new Schema({
            ref: 'medicalhistory'
         }
     ]
-}
-    , {
-        versionKey: false,
-        timestamps: true
-    })
+},{
+    versionKey: false,
+    timestamps: true
+})
 
 doctorSchema.pre('save', async function () {
     const salt = await bcrypt.genSalt(10)

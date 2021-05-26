@@ -11,7 +11,7 @@ const medicalappointmentSchema = new Schema({
     },
     date:{type : Date, default: Date.now},
     description:{type: String,},
-    price:{type: String,},
+    price:{type: Number},
     schedule:{
         type: Schema.Types.ObjectId,
         ref:'schedule'

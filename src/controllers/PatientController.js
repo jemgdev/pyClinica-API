@@ -10,30 +10,30 @@ const handleErrors = (error) => {
     let errors = { name: '', fatherLastName: '', motherLastName: '', email: '', password: '' }
 
     if (error.code === 11000) {
-        errors.email = 'Email already exists'
+        errors.email = 'El email ya existe'
     }
 
     if (error.errors) {
 
         if (error.errors.name) {
-            errors.name = 'You must to have a name'
+            errors.name = 'Tienes que ingresar un nombre'
         }
 
         if (error.errors.fatherLastName) {
-            errors.fatherLastName = 'You must to have a fatherLastName'
+            errors.fatherLastName = 'Tienes que ingresar un apellido paterno'
         }
     
         if (error.errors.motherLastName) {
-            errors.motherLastName = 'You must to have a motherLastName'
+            errors.motherLastName = 'Tienes que ingresar un apellido materno'
         }
     
         if (error.errors.email) {
-            errors.email = 'Wrong email'
+            errors.email = 'Email erroneo'
         }
     }
 
     if (error.message === 'Password is wrong') {
-        errors.password = 'Password is wrong'
+        errors.password = 'La contraseña es incorrecta'
     }
 
     return errors
@@ -56,14 +56,14 @@ patientController.register = async (req, res) => {
 
         try {
 
-            const patientSaved = await newPatient.save()
+            await newPatient.save()
 
             res.status(201).json({
-                message: 'The patient has been registered successfully'
+                message: 'El paciente ha sido registrado correctamente'
             })            
         } catch (error) {    
             
-            res.status(401).json({
+            res.status(200).json({
                 error: handleErrors(error)
             })
         }
@@ -71,8 +71,8 @@ patientController.register = async (req, res) => {
     } 
     else {
         
-        res.status(401).json({
-            error: 'Passwords are differents'
+        res.status(200).json({
+            error: 'Las contraseñas son diferentes'
         })
     }
 }
@@ -108,7 +108,7 @@ patientController.login = async (req, res) => {
             
         } catch (error) {
             
-            res.status(404).json({
+            res.status(200).json({
 
                 auth: false,
                 error: handleErrors(error)            
@@ -117,9 +117,9 @@ patientController.login = async (req, res) => {
     }
     else {
 
-        res.status(404).json({
+        res.status(200).json({
             auth: false,
-            error: 'Email is not registered' 
+            message: 'El email no esta registrado' 
         })
 
     }
@@ -131,7 +131,7 @@ patientController.changePersonalInformation = async (req, res) => {
 
     try {
 
-        const patientUpdated = await Patient.findByIdAndUpdate(req.id, {
+        await Patient.findByIdAndUpdate(req.id, {
 
             name,
             fatherLastName,
@@ -152,12 +152,12 @@ patientController.changePersonalInformation = async (req, res) => {
         })
     
         res.status(201).json({
-            message: 'The patient has been updated successfully'
+            message: 'Los datos del paciente han sido actualizados con éxito'
         })
         
     } catch (error) {
 
-        res.status(500).json({
+        res.status(200).json({
             error: handleErrors(error)
         })
     }
@@ -173,26 +173,49 @@ patientController.changePassword = async (req, res) => {
         
         if (await Patient.login(password, patientFound.password)) {
 
-            const patientUpdated = await Patient.findByIdAndUpdate(req.id, {
+            await Patient.findByIdAndUpdate(req.id, {
                 password: await Patient.changePassword(newPassword)
             }, {
                 new: true
             })
     
             res.status(201).json({
-                message: 'The password has been updated successfully'
+                message: 'La contraseña ha sido actualizada con éxito'
             })
         }
         else {
     
-            res.status(404).json({
-                error: 'Passwords are differents'
+            res.status(200).json({
+                message: 'Las contraseñas son diferentes'
             })
         }
     } catch (error) {
         
-        res.status(404).json({
+        res.status(200).json({
             error: handleErrors(error)
+        })
+    }
+}
+
+patientController.changeAvatar = async (req, res) => {
+
+    const { avatar } = req.body
+
+    try {
+
+        await Patient.findByIdAndUpdate(req.id, {
+            avatar
+        }, {
+            new: true
+        })
+    
+        res.status(201).json({
+            message: 'El avatar ha sido actualizado correctamente'
+        })
+    } catch (error) {
+        
+        res.status(201).json({
+            message: 'Hubo un error al actualizar el avatar'
         })
     }
 }

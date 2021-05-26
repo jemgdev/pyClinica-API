@@ -93,7 +93,7 @@ AdministratorController.insertAdministrator = async (req, res) => {
     age,
   });
   try {
-    const administratorCreate = await administratorSchema.save();
+    await administratorSchema.save();
     res.json({ message: "Administrador registrado correctamente" });
   } catch (error) {
     console.log(error);
@@ -104,7 +104,7 @@ AdministratorController.changePersonalInformation = async (req, res) => {
   const { name, surname_p, surname_m, phone, dni, gender, age } = req.body;
 
   try {
-    const administratorUpdated = await Administrator.findByIdAndUpdate(
+    await Administrator.findByIdAndUpdate(
       req.id,
       {
         name,
@@ -135,7 +135,7 @@ AdministratorController.changePassword = async (req, res) => {
 
   try {
     if (await Administrator.login(password, administratorFound.password)) {
-      const administratorUpdated = await Administrator.findByIdAndUpdate(
+      await Administrator.findByIdAndUpdate(
         req.id,
         {
           password: await Administrator.changePassword(newPassword),
@@ -147,12 +147,12 @@ AdministratorController.changePassword = async (req, res) => {
 
       res.status(201).json({ message: "Contraseña actualizada correctamente" });
     } else {
-      res.status(404).json({
+      res.status(200).json({
         error: "Las contraseñas son diferentes",
       });
     }
   } catch (error) {
-    res.status(404).json({ error: "Contraseña incorrecta" });
+    res.status(200).json({ error: "Contraseña incorrecta" });
   }
 };
 

@@ -47,15 +47,15 @@ medicalHistoryController.insertMedicalHistory = async (req, res) => {
         )
 
         await Schedule.findByIdAndUpdate(medicalAppointmentDeleted.schedule, {
-            availability:true,
+            availability: true,
         })
 
         res.status(201).json(promises[2])
 
     } catch (error) {
         
-        res.status(404).json({
-            message: `There was an error with the insert: ${error.message}`
+        res.status(200).json({
+            message: `Hubo un error con la inserción del historial médico: ${error.message}`
         })
     }
     
@@ -94,9 +94,10 @@ medicalHistoryController.listByPatientId = async (req, res) => {
             },
             {
                 $project: {
-                    doctor: '$doctor.name',
-                    doctor_p: '$doctor.surname_p',
-                    doctor_m: '$doctor.surname_m',
+                    name: '$doctor.name',
+                    fatherLastName: '$doctor.surname_p',
+                    motherLastName: '$doctor.surname_m',
+                    avatar: '$doctor.avatar',
                     _id: "$medicalHistories._id",
                     date: '$medicalHistories.date'
                 }
@@ -140,9 +141,10 @@ medicalHistoryController.listByDoctortId = async (req, res) => {
             },
             {
                 $project: {
-                    patient: '$patient.name',
-                    patient_p: '$patient.fatherLastName',
-                    patient_m: '$patient.motherLastName',
+                    name: '$patient.name',
+                    fatherLastName: '$patient.fatherLastName',
+                    motherLastName: '$patient.motherLastName',
+                    avatar: '$patient.avatar',
                     _id: "$medicalHistories._id",
                     date: '$medicalHistories.date'
                 }

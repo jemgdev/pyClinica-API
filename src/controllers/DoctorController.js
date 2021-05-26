@@ -8,33 +8,33 @@ const handleErrors = (error) => {
 
     console.log(error.message, error.code)
 
-    let errors = { name: '', surname_p: '', surname_m: '', email: '', password: '' }
+    let errors = { name: '', fatherLastName: '', motherLastName: '', email: '', password: '' }
 
     if (error.code === 11000) {
-        errors.email = 'Email already exists'
+        errors.email = 'El email ya existe'
     }
 
     if (error.errors) {
         
         if (error.errors.name) {
-            errors.name = 'You must to have a name'
+            errors.name = 'Tienes que ingresar un nombre'
         }
     
         if (error.errors.surname_p) {
-            errors.surname_p = 'You must to have a fatherLastName'
+            errors.fatherLastName = 'Tienes que ingresar un apellido paterno'
         }
     
         if (error.errors.surname_m) {
-            errors.surname_m = 'You must to have a motherLastName'
+            errors.motherLastName = 'Tienes que ingresar un apellido materno'
         }
     
         if (error.errors.email) {
-            errors.email = 'Wrong email'
+            errors.email = 'Email erroneo'
         }
     }
 
     if (error.message === 'Password is wrong') {
-        errors.password = 'Password is wrong'
+        errors.password = 'La contraseña es incorrecta'
     }
 
     return errors
@@ -61,7 +61,7 @@ DoctorController.insertDoctor = async (req, res) => {
 
         const doctorCreate = await doctorSchema.save();
         
-        const specialtyFound = await Specialty.findByIdAndUpdate(doctorCreate.specialty, {
+        await Specialty.findByIdAndUpdate(doctorCreate.specialty, {
             
             $addToSet:{
                 doctors: doctorCreate._id
@@ -71,12 +71,11 @@ DoctorController.insertDoctor = async (req, res) => {
         })
 
         res.json({
-            doctorCreate,
-            specialtyFound
+            message: 'El doctor ha sido registrado correctamente'
         })
     } catch (error) {
 
-        res.status(401).json({
+        res.status(200).json({
             error: handleErrors(error)
         })
     }
@@ -87,7 +86,7 @@ DoctorController.listDoctors = async (req, res) => {
 
     const listDoctors = await Doctor.find()
 
-    res.status(201).json({
+    res.status(200).json({
         listDoctors
     })
 }
@@ -100,7 +99,7 @@ DoctorController.deleteDoctors = async (req, res) => {
 
         const doctorDeleted = await Doctor.findByIdAndDelete(iddoctor)
 
-        const specialtyFound = await Specialty.findByIdAndUpdate(doctorDeleted.specialty, {
+        await Specialty.findByIdAndUpdate(doctorDeleted.specialty, {
             $pull: {
                 doctors: doctorDeleted._id
             }
@@ -109,14 +108,12 @@ DoctorController.deleteDoctors = async (req, res) => {
         })
 
         res.status(201).json({
-            message: 'Doctor deleted',
-            doctorDeleted,
-            specialtyFound
+            message: 'El doctor ha sido eliminado correctamente'
         })
     } catch (error) {
 
-        res.status(201).json({
-            message: 'Doctor has not been deleted'
+        res.status(200).json({
+            message: 'El doctor no ha sido eliminado'
         })
     }
 }
@@ -127,7 +124,7 @@ DoctorController.updateDoctorById = async (req, res) => {
     const { name, surname_p, surname_m, email, phone, dni, age } = req.body
 
     try {
-        const doctorUpdated = await Doctor.findByIdAndUpdate(req.id, {
+        await Doctor.findByIdAndUpdate(req.id, {
             name,
             surname_p,
             surname_m,
@@ -139,56 +136,64 @@ DoctorController.updateDoctorById = async (req, res) => {
             new: true
         })
 
-        res.status(201).json(doctorUpdated)
+        res.status(201).json({
+            message: 'El doctor ha sido actualizado con exito'
+        })
 
     } catch (error) {
 
         console.log(error)
-        res.status(500).json({
-            message: 'There was an error in the user update'
+        res.status(200).json({
+            message: handleErrors(error)
         })
     }
 }
-
 
 //Logueo del Doctor
 DoctorController.login = async (req, res) => {
 
     const { email, password } = req.body
 
-    const doctorFound = await Doctor.find({ email })
-
+    const doctorFound = await Doctor.findOne({ email })
+    
     if (doctorFound) {
-        try {
-            if (await Doctor.login(password, doctorFound[0].password)) {
 
-                const token = await jwt.sign({ id: doctorFound[0]._id }, process.env.SECRET_KEY, {
+        try {
+
+            if (await Doctor.login(password, doctorFound.password)) {
+
+                const token = await jwt.sign({ id: doctorFound._id }, process.env.SECRET_KEY, {
 
                     expiresIn: 60 * 60 * 24
 
                 })
 
-
                 res.status(200).json({
-                    message: 'token created',
+                    auth: true,
                     token
                 })
 
             } else {
 
                 res.status(200).json({
-                    message: 'token has not been created'
+                    auth: false,
+                    message: 'El token no ha sido creado'
                 })
             }
 
         } catch (error) {
 
+            res.status(200).json({
+                auth: false,
+                error: handleErrors(error)
+            })
         }
 
     } else {
 
-        res.status(404).json({
-            error: 'Email is not registered'
+        res.status(200).json({
+            auth: false,
+            message: 'El email no esta registrado'
         })
     }
 }
@@ -230,8 +235,7 @@ DoctorController.listDoctorBySpecialty = async (req, res) => {
         ]
     )
 
-    res.status(201).json({
-        message: "Specialty found",
+    res.status(200).json({
         specialtyFound
     })
 }
@@ -246,26 +250,53 @@ DoctorController.changePassword = async (req, res) => {
         
         if (await Doctor.login(password, doctorfound.password)) {
 
-            const doctorUpdated = await Doctor.findByIdAndUpdate(req.id, {
+            await Doctor.findByIdAndUpdate(req.id, {
                 password: await Doctor.changePassword(newPassword)
             }, {
                 new: true
             })
     
-            res.status(201).json(doctorUpdated)
+            res.status(200).json({
+                message: 'La contraseña ha sido actualizado con exito'
+            })
         }
         else {
     
-            res.status(404).json({
-                error: 'Passwords are differents'
+            res.status(200).json({
+                error: 'Las contraseñas son diferentes'
             })
         }
     } catch (error) {
         
-        res.status(404).json({
+        res.status(200).json({
             error: handleErrors(error)
         })
     }
+}
+
+DoctorController.changeAvatar = async (req, res) => {
+
+    const { avatar } = req.body
+
+    try {
+        
+        await Doctor.findByIdAndUpdate(req.id, {
+            avatar
+        }, {
+            new: true
+        })
+    
+        res.status(201).json({
+            message: 'El avatar ha diso cambiado correctamente'
+        })
+    } catch (error) {
+
+        res.status(201).json({
+            message: 'Hubo un error al actualizar el avatar'
+        })
+    }
+
+    
 }
 
 DoctorController.getDoctorById = async (req, res) => {

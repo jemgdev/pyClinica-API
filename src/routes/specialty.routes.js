@@ -9,5 +9,4 @@ router.post('/specialty/insertspecialty',verifyTokenAdministrator, insertSpecial
 router.delete('/specialty/deletespecialty/:specialtyid', verifyTokenAdministrator, deleteSpecialty)
 router.put('/specialty/updatespecialty/:specialtyid', verifyTokenAdministrator, updateSpecialty)
 router.get('/specialty/listspecialtybycampus/:campusid',verifyToken,listSpecialtyByCampus)
-//router.get('/specialty/listonlydoctors/:specialty-id', ListOnlyDoctors)
 module.exports = router
