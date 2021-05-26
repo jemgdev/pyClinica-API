@@ -210,7 +210,7 @@ patientController.changeAvatar = async (req, res) => {
         })
     
         res.status(201).json({
-            message: 'Avatar ha sido actualizado correctamente'
+            message: 'El avatar ha sido actualizado correctamente'
         })
     } catch (error) {
         
