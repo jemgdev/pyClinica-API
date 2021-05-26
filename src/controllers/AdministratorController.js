@@ -47,21 +47,23 @@ AdministratorController.loginAdministrator = async (req, res) => {
         );
 
         res.status(200).json({
-          status: true,
+          auth: true,
           token,
         });
       } else {
         res.status(200).json({
-          status: false,
+          auth: false,
         });
       }
     } catch (error) {
       res.status(404).json({
-        error: "Constraseña incorrecta",
+        auth: false,
+        error: "Constraseña incorrecta"
       });
     }
   } else {
     res.status(404).json({
+      auth: false,
       error: "El correo no esta registrado",
     });
   }
