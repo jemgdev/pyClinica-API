@@ -170,4 +170,28 @@ AdministratorController.InfoAdministratorById = async (req, res) => {
   }
 };
 
+AdministratorController.changeAvatar = async (req, res) => {
+
+  const { avatar } = req.body
+
+  try {
+
+      await Administrator.findByIdAndUpdate(req.id, {
+          avatar
+      }, {
+          new: true
+      })
+  
+      res.status(201).json({
+          message: 'El avatar ha sido actualizado correctamente'
+      })
+  } catch (error) {
+      
+      res.status(201).json({
+          message: 'Hubo un error al actualizar el avatar'
+      })
+  }
+  
+}
+
 module.exports = AdministratorController;
