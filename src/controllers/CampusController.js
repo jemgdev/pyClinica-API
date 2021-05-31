@@ -4,6 +4,7 @@ const CampusController = {};
 
 // listar campus
 CampusController.listCampus = async (req, res) => {
+  
   const campusFound = await Campus.find().select({"createAt":0 , "updatedAt":0});
   res.json(campusFound);
 };
