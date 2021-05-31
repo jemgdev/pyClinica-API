@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const AdministratorController = {};
 
 const handleErrors = (error) => {
+  
   console.log(error.message, error.code);
 
   let errors = { email: "", password: "" };
