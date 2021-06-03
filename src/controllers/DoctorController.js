@@ -44,6 +44,7 @@ const handleErrors = (error) => {
 DoctorController.insertDoctor = async (req, res) => {
 
     const { name, surname_p, surname_m, email, password, phone, dni, age, gender, specialty } = req.body
+    
     const doctorSchema = new Doctor({
         name,
         surname_p,
