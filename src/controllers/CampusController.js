@@ -90,4 +90,28 @@ CampusController.ListOnlySpecialties = async (req, res) => {
   });
 }
 
+//Cambiar avatar de campus
+CampusController.changeAvatar = async (req, res) => {
+  const idCampus = req.params.campusid;
+  const { avatar } = req.body
+
+  try {
+
+      await Campus.findByIdAndUpdate(idCampus, {
+          avatar
+      }, {
+          new: true
+      })
+  
+      res.status(201).json({
+          message: 'El avatar ha sido actualizado correctamente'
+      })
+  } catch (error) {
+      
+      res.status(201).json({
+          message: 'Hubo un error al actualizar el avatar'
+      })
+  }
+}
+
 module.exports = CampusController;

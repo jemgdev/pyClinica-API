@@ -153,4 +153,28 @@ SpecialtyController.updateSpecialty = async (req, res) => {
   }
 };
 
+//Cambiar avatar de Especialidad
+SpecialtyController.changeAvatar = async (req, res) => {
+  const idSpecialty = req.params.specialtyid;
+  const { avatar } = req.body
+
+  try {
+
+      await Campus.findByIdAndUpdate(idSpecialty, {
+          avatar
+      }, {
+          new: true
+      })
+  
+      res.status(201).json({
+          message: 'El avatar ha sido actualizado correctamente'
+      })
+  } catch (error) {
+      
+      res.status(201).json({
+          message: 'Hubo un error al actualizar el avatar'
+      })
+  }
+}
+
 module.exports = SpecialtyController;
