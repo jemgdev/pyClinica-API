@@ -73,6 +73,7 @@ DoctorController.insertDoctor = async (req, res) => {
         res.json({
             message: 'El doctor ha sido registrado correctamente'
         })
+        
     } catch (error) {
 
         res.status(200).json({
