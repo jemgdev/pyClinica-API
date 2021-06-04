@@ -24,10 +24,7 @@ TurnController.insertTurn = async (req, res) => {
     const turnCreate = await turnSchema.save();
     await Doctor.findByIdAndUpdate(
       idDoctor,
-      {
-        $addToSet: {
-          turn: turnCreate._id,
-        },
+      { turn: turnCreate._id,
       },
       {
         new: true,

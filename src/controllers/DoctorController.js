@@ -225,13 +225,25 @@ DoctorController.listDoctorBySpecialty = async (req, res) => {
                 $unwind: '$doctors'  //separar los doctores en diferentes objetos segun la cantidad de matches
             },
             {
+                $lookup: {
+                    from: 'turns',  //Collections con la que se unira
+                    localField: 'doctors.turn', //Atributo de la collecion Specialty que hara el match
+                    foreignField: '_id', //Id de la collections doctors que hara match
+                    as: 'turn' //nombre del nuevo atributo(arreglo)
+                }
+            },
+            {
+                $unwind: '$turn'  //separar los doctores en diferentes objetos segun la cantidad de matches
+            },
+            {
                 //Elegir que atributos mostrar
                 $project: {
                     name: '$doctors.name',
-                    surname_p: '$doctors.surname_p',
-                    surname_m: '$doctors.surname_m',
+                    fatherLastName: '$doctors.surname_p',
+                    motherLastName: '$doctors.surname_m',
                     avatar: '$doctors.avatar',
-                    specialty: '$name'
+                    specialty: '$name',
+                    turn: '$turn.type'
                 }
             }
         ]
