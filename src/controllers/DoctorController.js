@@ -236,9 +236,7 @@ DoctorController.listDoctorBySpecialty = async (req, res) => {
         ]
     )
 
-    res.status(200).json({
-        specialtyFound
-    })
+    res.status(200).json(specialtyFound)
 }
 
 DoctorController.changePassword = async (req, res) => {
