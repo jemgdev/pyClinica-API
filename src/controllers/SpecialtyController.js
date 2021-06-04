@@ -36,6 +36,7 @@ SpecialtyController.listSpecialtyByCampus = async (req, res) => {
           {
               //Elegir que atributos mostrar
               $project: {
+                  _id: '$specialty._id',
                   name: '$specialty.name',
                   avatar: '$specialty.avatar',
                   price: '$specialty.price',
