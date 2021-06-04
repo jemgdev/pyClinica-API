@@ -50,9 +50,7 @@ SpecialtyController.listSpecialtyByCampus = async (req, res) => {
       message: "El campus no existe o no cuenta con especialidades",
     });
   }else{
-    res.status(201).json({
-      campusFound,
-    });
+    res.status(201).json(campusFound);
   }
 
 }

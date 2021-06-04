@@ -107,7 +107,7 @@ MedicalappointmentController.deleteMedicalAppointment = async (req, res) => {
 };
 
 //actualizar cita medica por id por parametro y cambios enviado en json
-MedicalappointmentController.   updateMedicappo = async (req, res) => {
+MedicalappointmentController.updateMedicappo = async (req, res) => {
     
     const medicalappoid = req.params.medicalappoid;
     try {
