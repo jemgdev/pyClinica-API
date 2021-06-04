@@ -41,7 +41,7 @@ administrator.statics.login = async (password, encryptedPassword) => {
     return state;
   }
 
-  throw Error("Contraseña incorrecta");
+  throw Error("Password is wrong");
 };
 
 administrator.statics.changePassword = async (password) => {

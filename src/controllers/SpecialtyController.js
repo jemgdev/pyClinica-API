@@ -36,6 +36,7 @@ SpecialtyController.listSpecialtyByCampus = async (req, res) => {
           {
               //Elegir que atributos mostrar
               $project: {
+                  _id: '$specialty._id',
                   name: '$specialty.name',
                   avatar: '$specialty.avatar',
                   price: '$specialty.price',
@@ -50,9 +51,7 @@ SpecialtyController.listSpecialtyByCampus = async (req, res) => {
       message: "El campus no existe o no cuenta con especialidades",
     });
   }else{
-    res.status(201).json({
-      campusFound,
-    });
+    res.status(201).json(campusFound);
   }
 
 }
