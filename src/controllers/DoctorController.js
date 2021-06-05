@@ -34,6 +34,7 @@ const handleErrors = (error) => {
     }
 
     if (error.message === 'Password is wrong') {
+        
         errors.password = 'La contraseña es incorrecta'
     }
 
