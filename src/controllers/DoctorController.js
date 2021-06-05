@@ -238,6 +238,7 @@ DoctorController.listDoctorBySpecialty = async (req, res) => {
             {
                 //Elegir que atributos mostrar
                 $project: {
+                    _id: '$doctors._id',
                     name: '$doctors.name',
                     fatherLastName: '$doctors.surname_p',
                     motherLastName: '$doctors.surname_m',
