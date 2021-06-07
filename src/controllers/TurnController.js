@@ -162,9 +162,9 @@ TurnController.listSchedulesIdDoctor = async (req, res) => {
       message: "El doctor no existe o no cuenta con horarios",
     });
   }else{
-    res.status(201).json({
+    res.status(201).json(
       doctorFound,
-    });
+    );
   }
 };
 
