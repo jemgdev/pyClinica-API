@@ -152,6 +152,7 @@ TurnController.listSchedulesIdDoctor = async (req, res) => {
         doctorsurname_m:"$surname_m",
         turn: "$turn.type",
         schedule: "$schedules.scheduletime",
+        availability: "schedules.availability",
       },
     },
   ]);

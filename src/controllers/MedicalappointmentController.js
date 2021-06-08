@@ -16,13 +16,14 @@ MedicalappointmentController.listMedicalAppo = async (req, res) => {
 MedicalappointmentController.insertMedicAppo = async (req, res) => {
 
     const  idSchedule  = req.params.idschedule
-    const { doctor, description, price, status } = req.body;
+    const { doctor, description, price, status,date } = req.body;
     const medicalappointmentSchema = new Medicalappointment({
 
         patient: req.id,
         doctor,
         description,
         price,
+        date,
         status,
         schedule: idSchedule
     })
