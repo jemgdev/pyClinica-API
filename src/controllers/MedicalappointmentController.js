@@ -154,6 +154,7 @@ MedicalappointmentController.listMedicAppoIdDoctor = async (req, res) => {
             {
                 $project: {
                     name: '$patient.name',
+                    idPatient: '$patient._id',
                     fatherLastName: '$patient.fatherLastName',
                     motherLastName: '$patient.motherLastName',
                     avatar: '$patient.avatar',
