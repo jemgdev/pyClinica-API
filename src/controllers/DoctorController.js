@@ -147,7 +147,7 @@ DoctorController.updateDoctorById = async (req, res) => {
 
         console.log(error)
         res.status(200).json({
-            message: handleErrors(error)
+            error: handleErrors(error)
         })
     }
 }
