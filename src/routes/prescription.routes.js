@@ -4,7 +4,7 @@ const verifyToken = require('../middlewares/TokenVerify')
 const { insertPrescription , updatePrescription, listPrescriptionByIdHistory} = require('../controllers/PrescriptionController')
 const router = Router()
 
-router.post('/prescription/insert', verifyTokenDoctor,insertPrescription)
+router.post('/prescription/insert/:idmedicalappointment', verifyTokenDoctor,insertPrescription)
 router.put('/prescription/update/:idprescription', verifyTokenDoctor,updatePrescription)
 router.get('/prescription/listprescriptions-patient/:idhistory', verifyToken, listPrescriptionByIdHistory)  
 router.get('/prescription/listprescriptions-doctor/:idhistory', verifyTokenDoctor, listPrescriptionByIdHistory) 

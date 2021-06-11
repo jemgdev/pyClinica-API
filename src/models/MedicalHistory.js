@@ -15,10 +15,12 @@ const medicalHistorySchema = new Schema({
     },
     description: { type: String },
     price: { type: String },
-    prescription: {
-        type: Schema.Types.ObjectId,
-        ref: 'prescription'
-    }
+    prescription: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'prescription'
+        }   
+    ]
 }, {
     versionKey: false,
     timestamps: true

@@ -1,65 +1,8 @@
 const mongoose = require('mongoose')
-const MedicalAppointment = require('../models/Medicalappointment')
-const MedicalHistory = require('../models/MedicalHistory')
 const Patient = require('../models/Patient')
 const Doctor = require('../models/Doctor')
-const Schedule = require('../models/Schedule')
 
 const medicalHistoryController = {}
-
-medicalHistoryController.insertMedicalHistory = async (req, res) => {
-
-    const { idprescription, idmedicalappointment } = req.params
-
-    const medicalAppointmentDeleted = await MedicalAppointment.findByIdAndDelete(idmedicalappointment)
-
-    const newMedicalHistory = new MedicalHistory({
-        ...medicalAppointmentDeleted._doc,
-        prescription: idprescription
-    })
-
-    try {
-        
-        const promises = await Promise.all(
-            [
-                await Doctor.findByIdAndUpdate(medicalAppointmentDeleted.doctor, {
-                    $pull: {
-                        medicalAppointment: medicalAppointmentDeleted._id
-                    },
-                    $addToSet: {
-                        medicalHistories: medicalAppointmentDeleted._id
-                    }
-                }, {
-                    new: true
-                }),
-                await Patient.findByIdAndUpdate(medicalAppointmentDeleted.patient, {
-                    $pull: {
-                        medicalAppointments: medicalAppointmentDeleted._id
-                    },
-                    $addToSet: {
-                        medicalHistories: medicalAppointmentDeleted._id
-                    }
-                }, {
-                    new: true
-                }),
-                await newMedicalHistory.save(),               
-            ]
-        )
-
-        await Schedule.findByIdAndUpdate(medicalAppointmentDeleted.schedule, {
-            availability: true,
-        })
-
-        res.status(201).json(promises[2])
-
-    } catch (error) {
-        
-        res.status(200).json({
-            message: `Hubo un error con la inserción del historial médico: ${error.message}`
-        })
-    }
-    
-}
 
 medicalHistoryController.listByPatientId = async (req, res) => {
 
