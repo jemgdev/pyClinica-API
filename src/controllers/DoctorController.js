@@ -124,13 +124,13 @@ DoctorController.deleteDoctors = async (req, res) => {
 //Actualizar los datos del Doctor
 DoctorController.updateDoctorById = async (req, res) => {
 
-    const { name, surname_p, surname_m, email, phone, dni, age } = req.body
+    const { name, fatherLastName, motherLastName, email, phone, dni, age } = req.body
 
     try {
         await Doctor.findByIdAndUpdate(req.id, {
             name,
-            surname_p,
-            surname_m,
+            surname_p: fatherLastName,
+            surname_m: motherLastName,
             email,
             phone,
             dni,
