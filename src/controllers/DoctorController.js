@@ -318,14 +318,22 @@ DoctorController.getDoctorById = async (req, res) => {
     const doctorId = req.id
 
     const doctorFound = await Doctor.findById(doctorId, {
-        medicalAppointments: 0,
+        medicalAppointment: 0,
         medicalHistories: 0,
         password: 0,
         createdAt: 0,
         updatedAt: 0
     })
 
-    res.status(200).json(doctorFound)
+    res.status(200).json({
+        name: doctorFound.name,
+        fatherLastName: doctorFound.surname_p,
+        motherLastName: doctorFound.surname_m,
+        email: doctorFound.email,
+        phone: doctorFound.phone,
+        dni: doctorFound.dni,
+        age: doctorFound.age
+    })
 }
 
 module.exports = DoctorController
