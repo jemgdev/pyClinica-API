@@ -124,13 +124,13 @@ DoctorController.deleteDoctors = async (req, res) => {
 //Actualizar los datos del Doctor
 DoctorController.updateDoctorById = async (req, res) => {
 
-    const { name, surname_p, surname_m, email, phone, dni, age } = req.body
+    const { name, fatherLastName, motherLastName, email, phone, dni, age } = req.body
 
     try {
         await Doctor.findByIdAndUpdate(req.id, {
             name,
-            surname_p,
-            surname_m,
+            surname_p: fatherLastName,
+            surname_m: motherLastName,
             email,
             phone,
             dni,
@@ -147,7 +147,7 @@ DoctorController.updateDoctorById = async (req, res) => {
 
         console.log(error)
         res.status(200).json({
-            message: handleErrors(error)
+            error: handleErrors(error)
         })
     }
 }
@@ -318,14 +318,22 @@ DoctorController.getDoctorById = async (req, res) => {
     const doctorId = req.id
 
     const doctorFound = await Doctor.findById(doctorId, {
-        medicalAppointments: 0,
+        medicalAppointment: 0,
         medicalHistories: 0,
         password: 0,
         createdAt: 0,
         updatedAt: 0
     })
 
-    res.status(200).json(doctorFound)
+    res.status(200).json({
+        name: doctorFound.name,
+        fatherLastName: doctorFound.surname_p,
+        motherLastName: doctorFound.surname_m,
+        email: doctorFound.email,
+        phone: doctorFound.phone,
+        dni: doctorFound.dni,
+        age: doctorFound.age
+    })
 }
 
 module.exports = DoctorController
