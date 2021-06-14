@@ -90,7 +90,7 @@ medicalHistoryController.listByDoctortId = async (req, res) => {
                     avatar: '$patient.avatar',
                     _id: "$medicalHistories._id",
                     date: '$medicalHistories.date',
-                    detail: '$medicalHistories.prescription'
+                    detail: '$medicalHistories.description'
                 }
             }
         ]
