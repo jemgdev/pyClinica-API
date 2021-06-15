@@ -311,25 +311,27 @@ DoctorController.changeAvatar = async (req, res) => {
 };
 
 DoctorController.getDoctorById = async (req, res) => {
-  const doctorId = req.id;
 
-  const doctorFound = await Doctor.findById(doctorId, {
-    medicalAppointment: 0,
-    medicalHistories: 0,
-    password: 0,
-    createdAt: 0,
-    updatedAt: 0,
-  });
+    const doctorId = req.id
 
-  res.status(200).json({
-    name: doctorFound.name,
-    fatherLastName: doctorFound.surname_p,
-    motherLastName: doctorFound.surname_m,
-    email: doctorFound.email,
-    phone: doctorFound.phone,
-    dni: doctorFound.dni,
-    age: doctorFound.age,
-  });
-};
+    const doctorFound = await Doctor.findById(doctorId, {
+        medicalAppointment: 0,
+        medicalHistories: 0,
+        password: 0,
+        createdAt: 0,
+        updatedAt: 0
+    })
 
-module.exports = DoctorController;
+    res.status(200).json({
+        name: doctorFound.name,
+        fatherLastName: doctorFound.surname_p,
+        motherLastName: doctorFound.surname_m,
+        email: doctorFound.email,
+        phone: doctorFound.phone,
+        dni: doctorFound.dni,
+        age: doctorFound.age,
+        avatar: doctorFound.avatar
+    })
+}
+
+module.exports = DoctorController

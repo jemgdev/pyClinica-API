@@ -129,6 +129,9 @@ PrescriptionController.listPrescriptionByIdHistory = async (req, res) => {
                 }    
             },
             {
+                $unwind: '$prescription'
+            },
+            {
                 $project: {
                     _id: '$prescription._id', 
                     detail: '$prescription.detail', 
@@ -138,11 +141,7 @@ PrescriptionController.listPrescriptionByIdHistory = async (req, res) => {
         ]
     )
 
-    res.status(201).json({
-       _id: prescriptionFound[0]._id[0], 
-       detail: prescriptionFound[0].detail[0], 
-       date: prescriptionFound[0].date[0]
-    })
+    res.status(201).json(prescriptionFound)
 }
 
 module.exports = PrescriptionController
