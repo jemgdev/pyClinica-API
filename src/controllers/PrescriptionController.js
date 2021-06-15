@@ -129,6 +129,9 @@ PrescriptionController.listPrescriptionByIdHistory = async (req, res) => {
                 }    
             },
             {
+                $unwind: '$prescription'
+            },
+            {
                 $project: {
                     _id: '$prescription._id', 
                     detail: '$prescription.detail', 
