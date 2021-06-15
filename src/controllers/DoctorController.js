@@ -332,7 +332,8 @@ DoctorController.getDoctorById = async (req, res) => {
         email: doctorFound.email,
         phone: doctorFound.phone,
         dni: doctorFound.dni,
-        age: doctorFound.age
+        age: doctorFound.age,
+        avatar: doctorFound.avatar
     })
 }
 
