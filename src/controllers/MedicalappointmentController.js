@@ -208,7 +208,9 @@ MedicalappointmentController.listMedicAppoByIdPatient = async (req, res) => {
                     motherLastName: '$doctor.surname_m',
                     avatar: '$doctor.avatar',
                     _id: "$medicalAppointments._id",
-                    date: '$medicalAppointments.date'
+                    date: '$medicalAppointments.date',
+                    description: "$medicalAppointments.description",
+                    price:"$medicalAppointments.price"
                 }
             }
         ]
