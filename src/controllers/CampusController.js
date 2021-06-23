@@ -11,12 +11,13 @@ CampusController.listCampus = async (req, res) => {
 
 // insertar campus
 CampusController.insertCampus = async (req, res) => {
-  const { department, province, district, direction,specialty } = req.body;
+  const { department, province, district, direction,avatar,specialty } = req.body;
   const campusSchema = new Campus({
     department,
     province,
     district,
     direction,
+    avatar,
     specialty
   });
   try {
