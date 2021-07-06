@@ -103,6 +103,7 @@ AdministratorController.insertAdministrator = async (req, res) => {
     dni,
     gender,
     age,
+    avatar
   } = req.body;
   const administratorSchema = new Administrator({
     name,
@@ -114,6 +115,7 @@ AdministratorController.insertAdministrator = async (req, res) => {
     dni,
     gender,
     age,
+    avatar
   });
   try {
     await administratorSchema.save();
