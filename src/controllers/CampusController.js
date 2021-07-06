@@ -1,5 +1,4 @@
 const Campus = require("../models/Campus");
-const Specialty = require("../models/Specialty");
 
 const CampusController = {};
 
@@ -23,18 +22,7 @@ CampusController.insertCampus = async (req, res) => {
   });
   try {
     const campusCreate = await campusSchema.save();
-
-    await Specialty.findByIdAndUpdate(specialty,
-      {
-        $addToSet: {
-          campus: campusCreate._id,
-        },
-      },
-      {
-        new: true,
-      }
-    );
-
+    //res.json(campusCreate);
     res.status(201).json({
       message: "El campus se registró exitosamente",
     });
