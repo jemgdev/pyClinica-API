@@ -58,13 +58,14 @@ SpecialtyController.listSpecialtyByCampus = async (req, res) => {
 
 //insertar especialidad
 SpecialtyController.insertSpecialty = async (req, res) => {
-  const { name, price, doctors, campus } = req.body;
+  const { name, price, doctors, campus,avatar } = req.body;
 
   const especialitySchema = new Specialty({
     name,
     price,
     doctors,
     campus,
+    avatar
   });
   try {
     const especialityCreate = await especialitySchema.save();
