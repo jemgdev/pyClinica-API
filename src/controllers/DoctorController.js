@@ -56,6 +56,7 @@ DoctorController.insertDoctor = async (req, res) => {
     dni,
     age,
     gender,
+    avatar,
     specialty,
   } = req.body;
 
@@ -69,6 +70,7 @@ DoctorController.insertDoctor = async (req, res) => {
     dni,
     age,
     gender,
+    avatar,
     specialty,
   });
 
