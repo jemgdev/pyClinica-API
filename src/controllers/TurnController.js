@@ -33,6 +33,7 @@ TurnController.insertTurn = async (req, res) => {
     //res.json({ turnCreate, doctorUpdated });
     res.status(201).json({
       message: "El turno fue registrado exitosamente",
+      turn: turnCreate._id
     });
   } catch (error) {
     res.status(200).json({
