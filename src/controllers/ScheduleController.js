@@ -14,7 +14,7 @@ ScheduleController.insertSchedule = async (req, res) => {
   const { scheduletime, availability, turn } = req.body;
   const ScheduleSchema = new Schedule({
     scheduletime,
-    availability : true,
+    availability,
     turn
   });
   try {
