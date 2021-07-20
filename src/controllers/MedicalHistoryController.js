@@ -37,7 +37,7 @@ medicalHistoryController.listByPatientId = async (req, res) => {
             },
             {
                 $sort: {
-                    createdAt
+                    date
                 }
             },
             {
