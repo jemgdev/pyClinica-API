@@ -36,6 +36,11 @@ medicalHistoryController.listByPatientId = async (req, res) => {
                 $unwind: '$doctor'
             },
             {
+                $sort: {
+                    createdAt
+                }
+            },
+            {
                 $project: {
                     name: '$doctor.name',
                     fatherLastName: '$doctor.surname_p',
